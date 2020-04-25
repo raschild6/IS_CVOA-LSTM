@@ -9,6 +9,7 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Flatten
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
+# # from tensorflow.python.client import device_lib
 
 config = ConfigProto()
 config.gpu_options.allow_growth = True
@@ -25,7 +26,7 @@ else:
 print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 #print(tf.config.list_physical_devices('GPU'))
 print(tf.test.is_built_with_cuda())
-
+# # print(device_lib.list_local_devices())
 
 hp_parser = {
     "learning_rate": {0:.0, 1:10e-1, 2:10e-2, 3:10e-3, 4:10e-4, 5:10e-5},
@@ -46,7 +47,7 @@ def adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval):
     return xtrain, xtest, ytrain, ytest, xval, yval
 
 
-def fit_lstm_model(xtrain, ytrain, xval, yval, individual_fixed_part, individual_variable_part, prediction_horizon, scaler, epochs=10, batch=1024):
+def fit_lstm_model(xtrain, ytrain, xval, yval, individual_fixed_part, individual_variable_part, prediction_horizon, scaler, epochs=10, batch=512):
     """
     Train a LSTM model.
     :param individual_fixed_part: Vector of 3 positions [learning_rate {0-3}, dropout {0-5}, #layers (including the first one)].

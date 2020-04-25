@@ -7,7 +7,7 @@ import os.path
 if __name__ == '__main__':
 
     my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "spain_energy_market.csv")
+    path = os.path.join(my_path, "spain_energy_market_very_small.csv")
     # Load the dataset
     data, scaler = load_data(path_to_data=path, useNormalization=True)
     # Transform data to a supervised dataset
@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     # Deep Learning parameters
     epochs = 10
-    batch = 1024
+    batch = 512
     
     # Initialize problem
     cvoa = CVOA(size_fixed_part = 3, min_size_var_part = 2, max_size_var_part = 11, fixed_part_max_values = [5, 8], var_part_max_value = 11, max_time = 20,
