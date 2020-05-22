@@ -45,7 +45,7 @@ class CVOA:
         t = 1
         res = 0
         # Part 1. Fixed part possible combinations.
-        for i in range (len(self.fixed_part_max_values)):
+        for i in range(len(self.fixed_part_max_values)):
             t *= self.fixed_part_max_values[i]
         res += t * self.max_size_var_part
         # Part 2. Var part possible combinations.
@@ -100,9 +100,9 @@ class CVOA:
                     traveler = False
                 # Step 5.4 Determine the travel distance, which is how far is the new infected individual.
                 if traveler:
-                    travel_distance = -1  # The value -1 is to indicate that all the individual elements can be affected.
+                    travel_distance = -1  # The value -1 is to indicate that all the individual elements can be affected.  # TODO: -1 indicate nmutated (numero mutazioni) = randint(0, max -1)
                 else:
-                    travel_distance = 1
+                    travel_distance = 1  # TODO: 1 indicate nmutated = 1,
                 # Step 5.5 Infect!!
                 for j in range(ninfected):
                     new_infected = x.infect(travel_distance=travel_distance)  # new_infected = infect(x, travel_distance)
@@ -118,14 +118,16 @@ class CVOA:
         # Step 7. Update the infected list with the new infected individuals.
         self.infected = new_infected_list
 
-
     def run(self):
         epidemic = True
         time = 0
         # Step 1. Infect to Patient Zero
-        #pz = Individual.random(size_fixed_part=self.size_fixed_part, min_size_var_part=self.min_size_var_part, max_size_var_part=self.max_size_var_part, fixed_part_max_values=self.fixed_part_max_values, var_part_max_value=self.var_part_max_value)
+        # pz = Individual.random(size_fixed_part=self.size_fixed_part, min_size_var_part=self.min_size_var_part,
+        #                   max_size_var_part=self.max_size_var_part, fixed_part_max_values=self.fixed_part_max_values,
+        #                   var_part_max_value=self.var_part_max_value)
         # custom pz
-        pz = Individual(self.size_fixed_part, self.min_size_var_part, self.max_size_var_part, self.fixed_part_max_values, self.var_part_max_value)
+        pz = Individual(self.size_fixed_part, self.min_size_var_part, self.max_size_var_part,
+                        self.fixed_part_max_values, self.var_part_max_value)
         pz.fixed_part = [4, 0, 4]
         pz.var_part = [7, 6, 0, 8]
         self.infected.append(pz)
@@ -135,26 +137,25 @@ class CVOA:
         total_ss = self.calcSearchSpaceSize()
         while epidemic and time < self.max_time:
             self.propagateDisease()
-            dmse, dmape = getMetrics_denormalized(model=self.bestModel, xval = self.xval, yval = self.yval, batch = self.batch, scaler = self.scaler)
+            dmse, dmape = getMetrics_denormalized(model=self.bestModel, xval=self.xval, yval=self.yval, batch=self.batch, scaler=self.scaler)
             print("Iteration ", (time + 1))
             #print("Best fitness so far: ", "{:.4f}".format(self.bestSolution.fitness))
-            print("Best fitness (MAPE ; MSE ) so far: ", "{:.4f}".format(self.bestSolution.fitness), " ; {:.4f}".format(dmse))
-            print("Best individual: ", self.bestSolution)
-            print("Infected: ", str(len(self.infected)), "; Recovered: ", str(len(self.recovered)), "; Deaths: ", str(len(self.deaths)))
-            print("Recovered/Infected: " + str("{:.4f}".format(100 * ((len(self.recovered)) / len(self.infected)))) + "%")
+            print("Best one --- MAPE: {:.4f} ; MSE: {:.4f} ; INDIVIDUAL: : {} ---"
+                  .format(self.bestSolution.fitness, dmse, self.bestSolution))
+            print("Infected: {} ; Recovered: {} ; Deaths: {} "
+                  .format(str(len(self.infected)), str(len(self.recovered)), str(len(self.deaths))))
+            print("Recovered/Infected: {:.4f} %".format(100 * len(self.recovered) / len(self.infected)))
             current_ss = len(self.infected) + len(self.recovered) + len(self.deaths)
-            print("Search space covered so far = " + str(current_ss) + " / " + str(total_ss) + " = " +
-                  str("{:.4f}".format(100 * (current_ss) / total_ss)) + "%\n")
+            print("Percentage of evaluated individual: {} / {} = {:.4f} %"
+                  .format(str(current_ss), str(total_ss), 100 * current_ss / total_ss))
             if not self.infected:
                 epidemic = False
             time += 1
 
-
     def fitness(self, individual):
         mse, mape, model = fit_lstm_model(xtrain=self.xtrain, ytrain=self.ytrain, xval=self.xval, yval=self.yval,
-                                         individual_fixed_part=individual.fixed_part,
-                                         individual_variable_part=individual.var_part, scaler=self.scaler,
-                                         prediction_horizon=self.pred_horizon, epochs=self.epochs, batch=self.batch)
-        print(individual)
-        print("---\n" + "MSE: ", " {:.4f}".format(mse) + " ; MAPE: ", " {:.4f}".format(mape) + "\n---")
+                                          individual_fixed_part=individual.fixed_part,
+                                          individual_variable_part=individual.var_part, scaler=self.scaler,
+                                          prediction_horizon=self.pred_horizon, epochs=self.epochs, batch=self.batch)
+        print("--- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(mse, mape, str(individual)))
         return mape.numpy(), model
