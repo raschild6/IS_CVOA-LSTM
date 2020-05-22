@@ -15,11 +15,12 @@ from tensorflow.compat.v1 import InteractiveSession
 # # from tensorflow.python.client import device_lib
 
 config = ConfigProto()
-#config.gpu_options.allow_growth = True
+# config.gpu_options.allow_growth = True  # OOM error
+# config.gpu_options.per_process_gpu_memory_fraction = 0.9  # failed to create cublas handle: CUBLAS_STATUS_NOT_INITIALIZED
 session = InteractiveSession(config=config)
 
-physical_devices = tf.config.list_physical_devices('GPU') # Obtener la lista de GPU's instaladas en la maquina
-#tf.config.experimental.set_memory_growth(physical_devices[0], True)
+physical_devices = tf.config.list_physical_devices('GPU')  # Obtener la lista de GPU's instaladas en la maquina
+# tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 print(tf.__version__)
 
@@ -27,10 +28,10 @@ if tf.test.gpu_device_name():
     print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
 else:
     print("Please install GPU version of TF")
-print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
-#print(tf.config.list_physical_devices('GPU'))
+# print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+# print(tf.config.list_physical_devices('GPU'))
 print(tf.test.is_built_with_cuda())
-# # print(device_lib.list_local_devices())
+# print(device_lib.list_local_devices())
 
 hp_parser = {
     "learning_rate": {0:.0, 1:10e-1, 2:10e-2, 3:10e-3, 4:10e-4, 5:10e-5},
@@ -69,7 +70,8 @@ def fit_lstm_model(xtrain, ytrain, xval, yval, individual_fixed_part, individual
             model.add(LSTM(units=hp_parser["units"][individual_variable_part[i]], return_sequences=False))
         model.add(Dropout(dp))
     model.add(Dense(units=prediction_horizon, activation="tanh"))
-    model.compile(optimizer=keras.optimizers.Adam(learning_rate=hp_parser["learning_rate"][individual_fixed_part[0]]), loss="mean_squared_error", metrics=[keras.metrics.MAPE, keras.metrics.MSE])
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=hp_parser["learning_rate"][individual_fixed_part[0]]),
+                  loss="mean_squared_error", metrics=[keras.metrics.MAPE, keras.metrics.MSE])
     model.fit(x=xtrain, y=ytrain, epochs=epochs, batch_size=batch, verbose=0, validation_data=(xval, yval))
     mse, mape = getMetrics_denormalized(model, xval, yval, batch, scaler)
     return mse, mape, model 

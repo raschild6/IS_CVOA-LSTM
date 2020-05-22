@@ -56,7 +56,7 @@ class CVOA:
         new_infected_list = []
         # Step 1. Assess fitness for each individual.
         for x in self.infected:
-            x.fitness, model  = self.fitness(x)
+            x.fitness, model = self.fitness(x)
             # If x.fitness is NaN, move from infected list to deaths lists
             if np.isnan(x.fitness):
                 self.deaths.append(x)
@@ -65,15 +65,15 @@ class CVOA:
         # Step 2. Sort the infected list by fitness (ascendent).
         self.infected = sorted(self.infected, key=lambda i: i.fitness)
         # Step 3. Update best global solution, if proceed.
-        if self.bestSolution.fitness==None or self.infected[0].fitness < self.bestSolution.fitness:
+        if self.bestSolution.fitness is None or self.infected[0].fitness < self.bestSolution.fitness:
             self.bestModel = model
             model.save("bestModel.h5")
             self.bestSolution = deepcopy(self.infected[0])
 
-        resetTF() # Release GPU memory
+        resetTF()  # Release GPU memory
         # Step 4. Assess indexes to point super-spreaders and deaths parts of the infected list.
-        if len(self.infected)==1:
-            idx_super_spreader=1
+        if len(self.infected) == 1:
+            idx_super_spreader = 1
         else:
             idx_super_spreader = self.SUPERSPREADER_PERC * len(self.infected)
         if len(self.infected) == 1:
