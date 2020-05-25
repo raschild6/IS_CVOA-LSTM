@@ -18,7 +18,7 @@ class CVOA:
     SUPERSPREADER_PERC = 0.04
     DEATH_PERC = 0.5 
 
-    def __init__(self, size_fixed_part, min_size_var_part, max_size_var_part, fixed_part_max_values, var_part_max_value, max_time, xtrain, ytrain, xval, yval, pred_horizon=24, epochs=10, batch=512, scaler=None):
+    def __init__(self, size_fixed_part, min_size_var_part, max_size_var_part, fixed_part_max_values, var_part_max_value, max_time, xtrain, ytrain, xval, yval, pred_horizon=1, epochs=10, batch=512, scaler=None):
         self.infected = []
         self.recovered = []
         self.deaths = []
