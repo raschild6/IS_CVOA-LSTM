@@ -1,7 +1,7 @@
 import numpy as np
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+#import os
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+#os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 from tensorflow.python.framework import ops
 import tensorflow.keras as keras
 import tensorflow as tf
@@ -15,12 +15,12 @@ from tensorflow.compat.v1 import InteractiveSession
 # # from tensorflow.python.client import device_lib
 
 config = ConfigProto()
-#config.gpu_options.allow_growth = True  # OOM error
+config.gpu_options.allow_growth = True  # OOM error
 # config.gpu_options.per_process_gpu_memory_fraction = 0.9  # failed to create cublas handle: CUBLAS_STATUS_NOT_INITIALIZED
 session = InteractiveSession(config=config)
 
 physical_devices = tf.config.list_physical_devices('GPU')  # Obtener la lista de GPU's instaladas en la maquina
-#tf.config.experimental.set_memory_growth(physical_devices[0], True)
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 print(tf.__version__)
 
