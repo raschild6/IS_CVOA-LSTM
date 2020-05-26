@@ -6,3 +6,14 @@
 
 # Python files
 *.pyc
+*.sif
+
+.idea/
+
+CVOA_LSTM/Dockerfile
+
+CVOA_LSTM/Singularity
+
+CVOA_LSTM/SingularityTF
+
+CVOA_LSTM/utils.txt
