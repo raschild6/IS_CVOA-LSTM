@@ -34,9 +34,9 @@ print(tf.test.is_built_with_cuda())
 # print(device_lib.list_local_devices())
 
 hp_parser = {
-    "learning_rate": {0:.0, 1:10e-1, 2:10e-2, 3:10e-3, 4:10e-4, 5:10e-5},
-    "dropout": {0:0, 1:.1, 2:.15, 3:.2, 4:.25, 5:.3, 6:.35, 7:.4, 8:.45},
-    "units": {0:25, 1:50, 2:75, 3:100, 4:125, 5:150, 6:175, 7:200, 8:225, 9:250, 10:275, 11:300}
+    "learning_rate": {0: .0, 1: 10e-1, 2: 10e-2, 3: 10e-3, 4: 10e-4, 5: 10e-5},
+    "dropout": {0: 0, 1: .1, 2: .15, 3: .2, 4: .25, 5: .3, 6: .35, 7: .4, 8:  .45},
+    "units": {0: 25, 1: 50, 2: 75, 3: 100, 4: 125, 5: 150, 6: 175, 7: 200, 8: 225, 9: 250, 10: 275, 11: 300}
 }
 
 def adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval):
@@ -82,6 +82,7 @@ def getMetrics_denormalized(model, xval, yval, batch, scaler):
     pred = scaler.inverse_transform(predictions.reshape(1, -1)).flatten()
     real = scaler.inverse_transform(yval.reshape(1, -1)).flatten()
     return keras.metrics.MSE(real, pred), keras.metrics.mape(real, pred)
+
 
 def resetTF():
     ops.reset_default_graph()
