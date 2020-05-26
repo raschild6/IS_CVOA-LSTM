@@ -1,10 +1,11 @@
 import numpy as np
-#import os
-#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 from tensorflow.python.framework import ops
 import tensorflow.keras as keras
 import tensorflow as tf
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
