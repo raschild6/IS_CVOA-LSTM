@@ -151,6 +151,7 @@ class CVOA:
             if not self.infected:
                 epidemic = False
             time += 1
+            sys.stdout.flush()
         return self.bestSolution
 
     def fitness(self, individual):
