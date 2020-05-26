@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow.python.framework import ops
 import tensorflow.keras as keras
 import tensorflow as tf
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
