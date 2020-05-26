@@ -49,7 +49,7 @@ def data_to_supervised(data, historical_window, prediction_horizon):
     return agg
 
 
-def splitData(data, historical_window, test_size=.1, val_size=.3):
+def splitData(data, historical_window, test_size=.01, val_size=.3):
     """
     Split data into training, validation and test. Also splitted into X and Y
     :param data: Data to be splitted
