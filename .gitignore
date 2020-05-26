@@ -17,3 +17,27 @@ CVOA_LSTM/Singularity
 CVOA_LSTM/SingularityTF
 
 CVOA_LSTM/utils.txt
+
+.idea/
+
+CVOA_LSTM/cvoa_lstm.sif
+
+CVOA_LSTM/Dockerfile
+
+CVOA_LSTM/environment.yml
+
+CVOA_LSTM/requirements.txt
+
+CVOA_LSTM/bestModel.h5
+
+CVOA_LSTM/sbatch.job
+
+CVOA_LSTM/Singularity
+
+CVOA_LSTM/SingularityTF
+
+CVOA_LSTM/tensorflow.sif
+
+CVOA_LSTM/tflow_opencv.sif
+
+CVOA_LSTM/utils.txt

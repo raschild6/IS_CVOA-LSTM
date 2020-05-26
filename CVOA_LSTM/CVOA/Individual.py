@@ -52,6 +52,7 @@ class Individual:
             if r < step * i:
                 change = self.mutation_steps[i-1]
             i += 1
+        # change = random.choice(self.mutation_steps)  # TODO: LOLOLOL
         new_value = value + change
         if new_value < min_value:
             new_value = min_value
@@ -113,6 +114,11 @@ class Individual:
                 mutated.infectPosition(pos)
                 mutated_positions.append(pos)
                 i+=1
+        # allowed_mutation_pos = range(total_size)  # TODO
+        # allowed_mutation_pos.remove(len(mutated.fixed_part)-1)  # already mutated
+        # mutated_positions = random.sample(allowed_mutation_pos, nmutated)
+        # for pos in mutated_positions:
+        #       mutated.infectPosition(pos)
         return mutated
 
     def __eq__(self, other):
