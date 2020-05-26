@@ -3,7 +3,7 @@
 #SBATCH --error=out/tensorflow.%j.err
 #SBATCH --output=out/tensorflow.%j.out
 #SBATCH --partition=allgroups
-#SBATCH --ntasks=8
+#SBATCH --ntasks=1
 #SBATCH --mem 10G
 #SBATCH --mail-user luca.perali@studenti.unipd.it
 #SBATCH --mail-type ALL
