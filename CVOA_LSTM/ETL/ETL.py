@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 
+
 def load_data(path_to_data, useNormalization=False):
     """
     Load dataset and normalize
@@ -10,7 +11,7 @@ def load_data(path_to_data, useNormalization=False):
     """
     data = pd.read_csv(path_to_data, header=None, engine="python", index_col=0, squeeze=True, usecols=[0,1], parse_dates=[0])
     data['datetime'] = pd.to_datetime(data['datetime'], errors='coerce')
-    data.dropna(axis = 0, how = 'any', inplace = True)
+    data.dropna(axis=0, how='any', inplace=True)
     data = data.values.astype("float32").reshape(-1, 1)
     scaler = None
     if useNormalization:
@@ -32,13 +33,13 @@ def data_to_supervised(data, historical_window, prediction_horizon):
     cols, names = list(), list()
     # Generate past values (t-W, ... t-1)
     for i in range(historical_window, 0, -1):
-        cols.append(dff.shift(i))
+        cols.append(dff.shift(i))  # non voglio uno shift ma una finestra di valori
         names += [('W%d' % (i)) for j in range(n_vars)]
         # Generate future values (t, t+1, ... t+H)
     for i in range(0, prediction_horizon):
-        cols.append(dff.shift(-i))
+        cols.append(dff.shift(-i))  # non voglio uno shift ma una finestra di valori
         if i == 0:
-            names += [('H1') for j in range(n_vars)]
+            names += ['H1' for j in range(n_vars)]
         else:
             names += [('H%d' % (i + 1)) for j in range(n_vars)]
     # Union
@@ -47,7 +48,8 @@ def data_to_supervised(data, historical_window, prediction_horizon):
     agg.dropna(inplace=True)
     return agg
 
-def splitData(data, historical_window, test_size=.3, val_size=.3):
+
+def splitData(data, historical_window, test_size=.01, val_size=.3):
     """
     Split data into training, validation and test. Also splitted into X and Y
     :param data: Data to be splitted
