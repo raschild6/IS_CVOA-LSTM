@@ -44,5 +44,7 @@ CVOA_LSTM/utils.txt
 
 CVOA_LSTM/out/
 
+CVOA_LSTM/Result/
+
 *.pdf
 *.xlsx

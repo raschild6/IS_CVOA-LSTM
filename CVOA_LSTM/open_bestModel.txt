@@ -1,9 +1,0 @@
-command:
-
-- install hdf5 to read .h5:
-
->	sudo apt install hdf5-tools
-
-- open file:
-
->	h5dump bestModel.h5
