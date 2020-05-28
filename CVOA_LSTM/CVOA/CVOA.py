@@ -1,5 +1,10 @@
 from CVOA.Individual import Individual
 from copy import deepcopy
+import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.widgets import TextBox
+from matplotlib.offsetbox import AnchoredText
+
 import numpy as np
 import sys as sys
 import random as random
@@ -7,6 +12,98 @@ from DEEP_LEARNING.LSTM import fit_lstm_model, getMetrics_denormalized, resetTF
 
 
 class CVOA:
+
+    min_x = 0
+    max_x = 10
+    infected_index = 1
+    individual_text = AnchoredText('', loc=10)
+    values_text = AnchoredText('', loc=6)
+    stat_text = AnchoredText('', loc=5)
+    actual_text = AnchoredText('', loc=8)
+
+    def on_launch(self):
+        #Set up plot
+        self.figure, (self.ax1,self.ax2) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [1, 3]})
+        self.linesY, = self.ax2.plot([],[], 'yo')
+        self.linesG, = self.ax2.plot([],[], 'go')
+        self.linesR, = self.ax2.plot([],[], 'ro')
+        #Autoscale on unknown axis and known lims on the other
+        self.ax2.set_autoscaley_on(True)
+        self.ax2.set_xlim(self.min_x, self.max_x)
+        self.ax1.axis('off')
+
+        self.ax1.add_artist(self.values_text)
+        self.ax1.add_artist(self.individual_text)
+        self.ax1.add_artist(self.stat_text)
+        self.ax1.add_artist(self.actual_text)
+
+        # place a text box in upper left
+        self.upgrade_values()
+
+        # Max size of windows plot
+        mng = plt.get_current_fig_manager()
+        mng.window.state("zoomed")
+
+    def plot_points(self, xdata_r, ydata_r, xdata_y, ydata_y, xdata_g, ydata_g):
+        #Update data (with the new _and_ the old points)
+        self.linesR.set_xdata(xdata_r)
+        self.linesR.set_ydata(ydata_r)
+        self.linesY.set_xdata(xdata_y)
+        self.linesY.set_ydata(ydata_y)
+        self.linesG.set_xdata(xdata_g)
+        self.linesG.set_ydata(ydata_g)
+        #Need both of these in order to rescale
+        self.ax2.relim()
+        self.ax2.autoscale_view()
+        #We need to draw *and* flush
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+
+    def upgrade_values(self):                           # PROBLEMA sistemare allineamento!
+        self.values_text.remove()
+        textstr = ("Infected:         {}\n" +
+                   "\nRecovered:     {}\n" + 
+                   "\nDeaths:           {}").format(str(len(self.infected)), str(len(self.recovered)), str(len(self.deaths))) #.expandtabs()
+
+        # these are matplotlib.patch.Patch properties
+        props = dict(boxstyle='round', facecolor='white', alpha=1.0, pad=1.5)
+        #self.ax1.text(0.05, 0.95, textstr, transform=self.ax1.transAxes, fontsize=16, verticalalignment='top', bbox=props)
+        self.values_text = AnchoredText(textstr, prop=dict(fontsize=16, bbox=props), loc=6)
+        self.ax1.add_artist(self.values_text)
+
+
+    def upgrade_Individual(self, individual):                           # PROBLEMA sistemare allineamento!
+        self.individual_text.remove()
+        textstr = str(individual)
+        self.individual_text = AnchoredText(textstr,  prop=dict(fontsize=25), loc=10)
+        self.ax1.add_artist(self.individual_text)
+
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+
+    def upgrade_Stat(self, mape):                           # PROBLEMA sistemare allineamento!
+        self.stat_text.remove()
+        textstr = ("BEST_MAPE:           {}\n" +
+                 "\nRecovered/Infected:  {:.2f} %").format(mape, 100 * len(self.recovered) / len(self.infected))
+
+        # these are matplotlib.patch.Patch properties
+        props = dict(boxstyle='round', facecolor='white', alpha=1.0, pad=1.5)
+        self.stat_text = AnchoredText(textstr,  prop=dict(fontsize=16, bbox=props), loc=5)
+        self.ax1.add_artist(self.stat_text)
+
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+
+    def upgrade_Actual(self, mape):                           # PROBLEMA sistemare allineamento!
+        self.actual_text.remove()
+        textstr = ("Actual_MAPE: {}").format(mape)
+
+        self.actual_text = AnchoredText(textstr,  prop=dict(fontsize=14, bbox=None), loc=8)
+        self.ax1.add_artist(self.actual_text)
+
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+
     bestSolution = None
     bestModel = None
     MIN_SPREAD = 0
@@ -18,6 +115,7 @@ class CVOA:
     SUPERSPREADER_PERC = 0.04
     DEATH_PERC = 0.5 
 
+    
     def __init__(self, size_fixed_part, min_size_var_part, max_size_var_part, fixed_part_max_values, var_part_max_value, max_time, xtrain, ytrain, xval, yval, pred_horizon=1, epochs=10, batch=512, scaler=None):
         self.infected = []
         self.recovered = []
@@ -37,6 +135,8 @@ class CVOA:
         self.epochs = epochs
         self.scaler = scaler
 
+        self.infected_index = 1
+
 
     def calcSearchSpaceSize (self):
         """
@@ -54,6 +154,7 @@ class CVOA:
 
     def propagateDisease(self):
         new_infected_list = []
+        self.infected_index = 1
         # Step 1. Assess fitness for each individual.
         for x in self.infected:
             x.fitness, model = self.fitness(x)
@@ -119,6 +220,9 @@ class CVOA:
         self.infected = new_infected_list
 
     def run(self):
+        
+        plt.ion()
+
         epidemic = True
         time = 0
         # Step 1. Infect to Patient Zero
@@ -131,6 +235,23 @@ class CVOA:
         pz.fixed_part = [4, 0, 4]
         pz.var_part = [7, 6, 0, 8]
         self.infected.append(pz)
+
+        # start graphic plot
+        self.on_launch()
+        xdata_r = []
+        ydata_r = []
+        xdata_y = []
+        ydata_y = []
+        xdata_g = []
+        ydata_g = []
+        point_x = 0.4
+        point_y = 1
+        xdata_y.append(point_x)
+        ydata_y.append(point_y)
+        self.plot_points(xdata_r, ydata_r, xdata_y, ydata_y, xdata_g, ydata_g)
+        point_x += 0.6
+        self.upgrade_Individual(pz)
+
         print("Patient Zero: " + str(pz) + "\n")
         self.bestSolution = deepcopy(pz)
         # Step 2. The main loop for the disease propagation
@@ -144,6 +265,7 @@ class CVOA:
                   .format(self.bestSolution.fitness, dmse, self.bestSolution))
             print("Infected: {} ; Recovered: {} ; Deaths: {} "
                   .format(str(len(self.infected)), str(len(self.recovered)), str(len(self.deaths))))
+            self.upgrade_Stat("{:.4f}".format(self.bestSolution.fitness))
             print("Recovered/Infected: {:.4f} %".format(100 * len(self.recovered) / len(self.infected)))
             current_ss = len(self.infected) + len(self.recovered) + len(self.deaths)
             print("Percentage of evaluated individual: {} / {} = {:.4f} %"
@@ -151,6 +273,31 @@ class CVOA:
             if not self.infected:
                 epidemic = False
             time += 1
+            
+            self.upgrade_values()
+
+            point_x += 0.2
+            for d in self.deaths:
+                xdata_r.append(point_x)
+                ydata_r.append(point_y)
+                point_y += 1
+            point_x += 0.2
+            point_y = 1
+            for i in self.infected:
+                xdata_y.append(point_x)
+                ydata_y.append(point_y)
+                point_y += 1
+            point_x += 0.2
+            point_y = 1
+            for r in self.recovered:
+                xdata_g.append(point_x)
+                ydata_g.append(point_y)
+                point_y += 1
+            
+            self.plot_points(xdata_r, ydata_r, xdata_y, ydata_y, xdata_g, ydata_g)
+            point_y = 1
+            point_x += 0.4
+
         return self.bestSolution
 
     def fitness(self, individual):
@@ -158,5 +305,9 @@ class CVOA:
                                           individual_fixed_part=individual.fixed_part,
                                           individual_variable_part=individual.var_part, scaler=self.scaler,
                                           prediction_horizon=self.pred_horizon, epochs=self.epochs, batch=self.batch)
-        print("--- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(mse, mape, str(individual)))
+        print("{} --- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(self.infected_index, mse, mape, str(individual)))
+        self.infected_index += 1
+        self.upgrade_Individual(individual)
+        self.upgrade_values()
+        self.upgrade_Actual("{:.4f}".format(mape))
         return mape.numpy(), model
