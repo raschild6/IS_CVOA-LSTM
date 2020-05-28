@@ -1,5 +1,6 @@
 from CVOA.Individual import Individual
 from copy import deepcopy
+import matplotlib.pyplot as plt
 import numpy as np
 import sys as sys
 import random as random
@@ -119,6 +120,8 @@ class CVOA:
         self.infected = new_infected_list
 
     def run(self):
+        plt.axis('off')
+        plt.show()
         epidemic = True
         time = 0
         # Step 1. Infect to Patient Zero
@@ -152,6 +155,7 @@ class CVOA:
                 epidemic = False
             time += 1
             sys.stdout.flush()
+
         return self.bestSolution
 
     def fitness(self, individual):
