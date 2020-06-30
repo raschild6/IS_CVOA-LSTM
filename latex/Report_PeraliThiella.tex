@@ -124,6 +124,20 @@ It has been decided to train a LSTM model with a dataset of sequences representi
 	The genetic part of CVOA is built by following a standard Genetic Algorithm (GA) but adding and modifying some components.
 The main components and functions performed by the GA are folded successively:
 
+\subsection{GA Constant Parameters}
+This subsection presents the main parameters used and which will be mentioned in the following sections.
+All probabilities involved in the GA are based on the real data of Coronavirus propagation model.
+\begin{itemize}
+\item $_PDIE$: An infected individual can die with a given probability.
+\item $_PSUPERSPREADER$: It is the probability that an individual spread the disease to a greater number of healthy individuals. After this condition is validated, two situations can be found: % TODO: cercare di fixare l'underscore _ che è osceno così e magari cambia il font dei nomi (senti fish)
+\subitem $ORDINARY\_RATE$: It is a standard infected individual (not a super-spreader) and this rate corresponde to its infection rate
+\subitem $SUPERSPREADER\_RATE$: If the infected individual turns out to be super-spreader, this is its infection rate which is at least more than double of Ordinary-Rate
+\item $_PREINFECTION$: Probability that a recovered individual can be re-infected.
+\item $_PISOLATION$: It corresponds to the probability of applying measures for social isolation to an individual. This parameter helps to reduce the exponential growth of the infected population after each iteration. Therefore, a high value must be assigned to this probability. Note that this value is not well defined by the real pandemic data because different countries have made different choices about it. 
+\item $_PTRAVEL$: This probability simulates how an infected individual can travel to any place in the world and can infect healthy individuals.
+\item $PANDEMIC\_DURATION$: This parameter simulates the duration of the pandemic.
+\end{itemize}
+
 \subsubsection{Population Individuals}
 	As explained above, the individuals of the population are composed of two arrays of integer values (fixed and variable length). They are also divided into three categories:
 \begin{itemize}
@@ -131,13 +145,13 @@ The main components and functions performed by the GA are folded successively:
 \item Recovered
 \item Infected
 \end{itemize}
-There is another category in which only some infected individuals can belong, according to a certain probability. Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called Super-Spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
+There is another category in which only some infected individuals can belong, according to a certain probability ($_PSUPERSPREADER$). Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called Super-Spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
 
 \subsubsection{Population}
 	The population divides individuals into three different (sub)populations, managed through lists and updated and maintained during the whole algorithm, in according with the type of individuals:
 \begin{itemize}
 \item Dead: It contains dead individuals. They can no longer be used in the algorithm.
-\item Recovered: After each epoch, infected individuals are removed from their population and inserted here. These individuals can return to influence the algorithm if they are reinfected. Also individuals who simulate social distancing measures and therefore are isolated, belong to this population.
+\item Recovered: After each epoch, infected individuals are removed from their population and inserted here. These individuals can return to influence the algorithm if they are reinfected ($_PREINFECTION$). Also individuals who simulate social distancing measures and therefore are isolated, belong to this population ($_PISOLATION$).
 \item New-Infected: It holds all the new individuals that have been infected in the previous epoch.
 \end{itemize}
 
@@ -146,7 +160,6 @@ There is another category in which only some infected individuals can belong, ac
 \item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
 \item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
-\item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a propagation function has been developed.
 \item Mutation: The basic process for the mutation is the single position mutation. It corresponds to the change of a value of a specific element in the fixed or variable array of an individual.
 First, a signed change amount \begin{math}C \in \{-2 ,-1, +1, +2\}\end{math} is randomly determined using the following criteria. A random real number $P$ between $0$ and $1$ is generated using a uniform distribution. The change amount will be:
 \begin{itemize}
@@ -156,10 +169,13 @@ First, a signed change amount \begin{math}C \in \{-2 ,-1, +1, +2\}\end{math} is 
 \item \begin{math}C=+2 \iff P \leq 1\end{math}
 \end{itemize}
 Once the amount of change is determined, the new value for the infected element is computed. If its previous value is $V$ , then the new value after the single position mutation will be \begin{math}V\textsuperscript{1} = V + C\end{math}. If the new value $V\textsuperscript{1}$ exceeds the limits defined for the individual codification, such value is set to the maximum or minimum allowed value accordingly.\\
-• Numerous mutations\\
+• Numerous mutations
+\item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a Propagation Function has been developed.
 \item Propagation Function:
-• Super spreaders => New infected and travel probability\\
-• Population evolution every Iteration\\
+%• Super spreaders => New infected and travel probability\\
+%• Population evolution every Iteration\\
+\item Stop Criterion:
+%One of the most interesting features of the proposed approach lies on its ability to end without the need of controlling any parameter. This situation occurs because the recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. Additionally, a preset number of iterations (PANDEMIC DURATION) can be added to the stop criterion. The social isolation measures also contributes to reaching the stop criterion.
 \end{itemize}
 
 \subsubsection{Evolution Steps}
