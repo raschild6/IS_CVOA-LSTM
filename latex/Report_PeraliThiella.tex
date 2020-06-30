@@ -118,35 +118,46 @@ It has been decided to train a LSTM model with a dataset of sequences representi
 
 \subsection{Long Short Term Memory}
 \subsubsection{Long Short Term Memory}
-\subsection{Genetic Algorithm}
-Differenze da un comune GA:\\
-• Paziente Zero\\
-• Fitness calcolato da LSTM\\
-• Non c’è un crossover\\
-• Tutte le probabilità in gioco si basano sul modello di propagazione del Coronavirus\\
 
-The following are the basics of this genetic algorithm.\\
-\subsubsection{Individuals Population}
-Super spreaders + infected / recovered / dead\\
+
+\subsection{Genetic Algorithm}
+	The genetic part of CVOA is built by following a standard Genetic Algorithm (GA) but adding and modifying some components.
+The main components and functions performed by the GA are folded successively:
+
+\subsubsection{Population Individuals}
+	As explained above, the individuals of the population are composed of two arrays of integer values (fixed and variable length). They are also divided into three categories:
+\begin{itemize}
+\item Dead
+\item Recovered
+\item Infected
+\end{itemize}
+There is another category in which only some infected individuals can belong, according to a certain probability. Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called super spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
 
 \subsubsection{Populations}
-The population divides individuals into 3 different (sub)populations, updated and maintained during the whole algorithm, in according with the type of individuals:
+	The population divides individuals into three different (sub)populations, managed through lists and updated and maintained during the whole algorithm, in according with the type of individuals:
 \begin{itemize}
 \item Dead: It contains dead individuals. They can no longer be used in the algorithm.
 \item Recovered: After each epoch, infected individuals are removed from their population and inserted here. These individuals can return to influence the algorithm if they are reinfected. Also individuals who simulate social distancing measures and therefore are isolated, belong to this population.
-\item New-Infected: It holds all the new individuals that are infected in the previous epoch.
+\item New-Infected: It holds all the new individuals that have been infected in the previous epoch.
 \end{itemize}
 
-\subsubsection{Mutation}
+\subsubsection{Main Steps}
+\begin{itemize}
+\item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
+\item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
+\item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
+\item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a propagation function has been developed.
+\item Mutation: 
 • Numerous mutations\\
 • Fixed part\\
-• Variable part\\
-
-\subsubsection{Propagation}
+• Variable part
+\item Propagation Function:
 • Super spreaders => New infected and travel probability\\
 • Population evolution every Iteration\\
-\\
-• Patient zero: fixed part + var part\\
+\end{itemize}
+
+\subsubsection{Evolution Steps}
+Patient zero: fixed part + var part\\
 while (epochs) {\\
 propagateDisease ()\\
 bestIndividualFound: infected / recovered / deaths\\
