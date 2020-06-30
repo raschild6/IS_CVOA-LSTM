@@ -117,7 +117,50 @@ It has been decided to train a LSTM model with a dataset of sequences representi
 
 
 \subsection{Long Short Term Memory}
-\subsubsection{Long Short Term Memory}
+The LSTM model is a neural network based on a computational unit (Figure \ref{fig:computational_unit}) that can memorize the context (represented by the function $ c(t) $). Each unit receive as input the concatenation of $ x(t)h(t-1)c(t-1) $ where $ h(t) = x(t-1) $ and $ x(t) $ is the input from dataset.
+\begin{figure}[!h]
+	\includegraphics[width=\columnwidth]{img/computational_unit}
+	\caption{The computational unit of a LSTM with input from dataset $ x(t) $, output $ h(t) $ and context function $ c(t) $. The input of the unit at time $ t $ is $ x(t)h(t-1)c(t-1) $ .}
+	\label{fig:computational_unit}
+\end{figure}
+
+
+\begin{figure}[!h]
+	\includegraphics[width=\columnwidth]{img/LSTM}
+	\caption{The general structure of the LSTM used in the experiment}
+	\label{fig:LSTM}
+\end{figure}
+A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input data and a corresponding sequence of output data.
+In our specific case it has been created the structure of NN as in Figure \ref{fig:LSTM}.\\ 
+In Table \ref{tab:params} there is the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ 12*6*8*6 = 3456 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
+\begin{table}[!h]
+	\caption{Table of the values to tune for the model. The chosen value for each parameter are: number of units per layer $ L_i $, Learning Rate ($ LR $), dropout percentage ($ D $) and number of LSTM layers ($ N $). }
+	\begin{tabular}{ccccc}
+		& $ L_i $ & $ LR $ 			& $ D $ & $ N $  \\ 
+\hline
+		1 & 25   & $ 10^{-1} $	& 0.05 & 1 \\
+		2 & 50   & $ 10^{-2} $  & 0.10  & 2 \\
+		3 & 75   & $ 10^{-3} $  & 0.15 & 3 \\
+		4 & 100  & $ 10^{-4} $  & 0.20  & 4 \\
+		5 & 125  & $ 10^{-5} $  & 0.25 & 5 \\
+		6 & 150  & $ 10^{-6} $  & 0.30  & 6 \\
+		7 & 175  &  			& 0.35 &   \\
+		8 & 200  &  			& 0.40  &   \\
+		9 & 225  &  			&      &   \\
+		10 & 250 &  			&      &   \\
+		11 & 275 &  			&      &   \\
+		12 & 300 &  			&      &   \\
+	\end{tabular}
+
+\label{tab:params}
+\end{table}
+
+Let's now analyze the coding method to obtain the individual of the genetic algorithm from the LSTM trained model.
+
+
+Nel nostro caso si propone di variare tra gli iperparametri il learning rate, la percentuale di Dropout e il numero di layer LSTM con il numero di unità sui rispettivi layer.
+Fissiamo in tabella i valori dei parametri che vogliamo valutare e per collegarci all’algoritmo genetico definiamo l’individuo della popolazione come una n-upla formata dagli indici deii valori dei parametri corrispondenti. Supponendo di aver scelto un LR di 0.001, una percentuale di Dropout del 5 % e un singolo Layer LSTM con 4 unità computazionali, l’individuo corrispondente è rappresentato dalla seguente tupla.
+
 \subsection{Genetic Algorithm}
 Differenze da un comune GA:\\
 • Paziente Zero\\
