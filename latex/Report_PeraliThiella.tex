@@ -110,6 +110,78 @@ Luca Perali, Michele Thiella
 \section{Basic Notation}
 \subsection{Long Short Term Memory}
 \subsection{Genetic Algorithm}
+Differenze da un comune GA:\\
+• Paziente Zero\\
+• Fitness calcolato da LSTM\\
+• Non c’è un crossover\\
+• Tutte le probabilità in gioco si basano sul modello di propagazione del Coronavirus\\
+
+The following are the basics of this genetic algorithm.\\
+\subsubsection{Individuals Population}
+Super spreaders + infected / recovered / dead\\
+
+\subsubsection{Populations}
+The population divides individuals into 3 different (sub)populations, updated and maintained during the whole algorithm, in according with the type of individuals:
+\begin{itemize}
+\item Dead: It contains dead individuals. They can no longer be used in the algorithm.
+\item Recovered: After each epoch, infected individuals are removed from their population and inserted here. These individuals can return to influence the algorithm if they are reinfected. Also individuals who simulate social distancing measures and therefore are isolated, belong to this population.
+\item New-Infected: It holds all the new individuals that are infected in the previous epoch.
+\end{itemize}
+
+\subsubsection{Mutation}
+• Numerous mutations\\
+• Fixed part\\
+• Variable part\\
+
+\subsubsection{Propagation}
+• Super spreaders => New infected and travel probability\\
+• Population evolution every Iteration\\
+\\
+• Patient zero: fixed part + var part\\
+while (epochs) {\\
+propagateDisease ()\\
+bestIndividualFound: infected / recovered / deaths\\
+}\\
+\\
+1.propagateDisease () =\\
+• Start from patient zero\\
+• Step 1: Calculate each individual's fitness\\
+• Step 2: sort the population by fitness\\
+• Step 3: Save the best solution\\
+• Step 4: idx super spreader and idx deaths\\
+• Step 5: spreading the disease\\
+o For each individual:\\
+If idx> = idx deaths:\\
+• kill him\\
+If not:\\
+• calculate the number of new ones infected by it:\\
+• if idx <idx super spreader (is super spreader):\\
+o ninfected = self.MIN SUPERSPREAD + random.randint (0, self.MAX SUPERSPREAD - self.MIN SUPERSPREAD)\\
+• otherwise:\\
+o ninfected = random.randint (0, self.MAX SPREAD)\\
+• Calculate probability that the individual has "traveled": if he is a traveler:\\
+or any individual can become infected (traverl distance = -1)\\
+• if not: traverl distance = 1\\
+• Cycle ninfected times:\\
+o new infected = x.infect (travel distance = travel distance)\\
+o If new infected does not belong to the list of deaths / infected / new infected list / recovered: Add it to the list new infected list\\
+o If new infected belongs to recovered and does not belong to new infected list:\\
+with prob. P REINFECTION add it to the new infected list list and remove it from recovered\\
+• infected list is added to retrieved and the inferred list becomes the new infected\\
+\\
+2. individual.infected =\\
+• copy the individual into a new one called mutated\\
+• with ind probability, the individual can change his variable part\\
+or change the 3rd value of the fixed part (= length var part) and then do the resizing of var part\\
+or travel distance = -1\\
+• if it changed: nmutated = random.randint (0, total size-1)\\
+• if not: nmutated = 1\\
+• cycle on nmutated:\\
+or choose a random pos that is not the 3rd fixed part value and has not already been changed\\
+o infectedPosition:\\
+case 1: the fixed part-1 changes\\
+case 2: change the varpart\\
+=> choose max and min range and change from the old value to the previously calculated pos\\
 
 \section{CVOA Meta-heuristic}
 
