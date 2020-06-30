@@ -107,8 +107,17 @@ Luca Perali, Michele Thiella
 	While developing a ML algorithm, as usual, it's required to define the structure of a model and the parameter to train that model in a data-set. Once defined the parameter to tune, and their domain, there is usually a huge number of configuration of the parameters to simply try all of them and see which is the best, therefore different meta-heuristics try to help in this choice.\\
 	In the first part of this report there is a short description of the LSTM model and the genetic algorithm to refresh the basic concept. Then there is a description of the CVOA meta-heuristic algorithm which will be combined with the LSTM for testing purposes. In the end there are some consideration about the efficacy of the method and the conclusion.
 
-\section{Basic Notation}
+\section{Basic Concepts}
+First of all, the CVOA algorithm is used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the data this net want to fit.
+It has been decided to train a LSTM model with a dataset of sequences representing the number of infected of a virus (in our case again the Covid19) over the time. Here is needed to specify that either the metaheuristic or the LSTM deal with Covid19, however it is involved in two independent way:
+\begin{itemize}
+	\item the \textbf{CVOA is inspired from the Covid19}, simulating the generation of new individual with the spread of new infected;
+	\item the \textbf{LSTM model is trained on the Covid19 data} of infected over the time, therefore can be used to forecast the number of infected.
+\end{itemize}
+
+
 \subsection{Long Short Term Memory}
+\subsubsection{Long Short Term Memory}
 \subsection{Genetic Algorithm}
 
 \section{CVOA Meta-heuristic}
