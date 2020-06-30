@@ -131,9 +131,9 @@ The main components and functions performed by the GA are folded successively:
 \item Recovered
 \item Infected
 \end{itemize}
-There is another category in which only some infected individuals can belong, according to a certain probability. Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called super spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
+There is another category in which only some infected individuals can belong, according to a certain probability. Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called Super-Spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
 
-\subsubsection{Populations}
+\subsubsection{Population}
 	The population divides individuals into three different (sub)populations, managed through lists and updated and maintained during the whole algorithm, in according with the type of individuals:
 \begin{itemize}
 \item Dead: It contains dead individuals. They can no longer be used in the algorithm.
@@ -147,10 +147,16 @@ There is another category in which only some infected individuals can belong, ac
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
 \item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
 \item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a propagation function has been developed.
-\item Mutation: 
+\item Mutation: The basic process for the mutation is the single position mutation. It corresponds to the change of a value of a specific element in the fixed or variable array of an individual.
+First, a signed change amount \begin{math}C \in \{-2 ,-1, +1, +2\}\end{math} is randomly determined using the following criteria. A random real number $P$ between $0$ and $1$ is generated using a uniform distribution. The change amount will be:
+\begin{itemize}
+\item \begin{math}C=-2 \iff P<0,25\end{math}
+\item \begin{math}C=-1 \iff P<0,50\end{math}
+\item \begin{math}C=+1 \iff P<0,75\end{math}
+\item \begin{math}C=+2 \iff P \leq 1\end{math}
+\end{itemize}
+Once the amount of change is determined, the new value for the infected element is computed. If its previous value is $V$ , then the new value after the single position mutation will be \begin{math}V\textsuperscript{1} = V + C\end{math}. If the new value $V\textsuperscript{1}$ exceeds the limits defined for the individual codification, such value is set to the maximum or minimum allowed value accordingly.\\
 • Numerous mutations\\
-• Fixed part\\
-• Variable part
 \item Propagation Function:
 • Super spreaders => New infected and travel probability\\
 • Population evolution every Iteration\\
