@@ -99,28 +99,28 @@ Luca Perali, Michele Thiella
 \maketitle
 
 \begin{abstract}
-	In recent years, Machine Learning (ML) has been gaining unprecedented visibility and success in the history of artificial intelligence, thanks certainly to the wide range of problems in which it can be applied: Machine Vision, Keyword Spotting Analysis, Data Sequence Forcasting, etc. \\
+	In recent years, Machine Learning (ML) has been gaining unprecedented visibility and success in the history of artificial intelligence, thanks certainly to the wide range of problems in which it can be applied: Machine Vision, Keyword Spotting Analysis, Data Sequence Forecasting, etc. \\
 	In the training phase of the ML algorithms, the programmer have to find good hyperparameters capable of obtaining the best results in the test phase. Due to the exponential number of possible combination of hyperparameters, this process can be time consuming. As these hyperparameters strongly depends on the type of problem being faced and on the dataset used, it is not possible to share parameters values between problems or models. \\
-	In this project we wanted to deepen a metaheuristic method based on evolutionary genetics, named Coronavirus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a metaheuristics inspired by the virus spread within the population, using it for the automatic calculation of hyperparameters for the training phase of an ML algorithm. This approach would like to reduce the time needed to find good hyperparameters to train the model for a specific problem.
+	In this project it's presented an analysis of the metaheuristic method based on evolutionary genetics, named Coronavirus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a metaheuristics inspired by the virus spread within the population, using it for the automatic calculation of hyperparameters for the training phase of an ML algorithm. This approach would like to reduce the time needed to find good hyperparameters to train the model for a specific problem.
 	
 \end{abstract}
 
 \section{Introduction}
-	While developing a ML algorithm, as usual, it's required to define the structure of a model and the parameter to train that model in a dataset. Once defined the parameter to tune, and their domain, there is usually a huge number of configuration of the parameters to simply try all of them and see which is the best, therefore different metaheuristics try to explore the hyperparameter search space in a clever way. \\
+	While developing a ML algorithm, as usual, it's required to define the structure of a model and the hyperparameter for the training phase. Once defined the hyperparameter to tune, and their domain. Since the number of possible configuration is exponential in the number of hyperparameter, it's not feasible to evaluate all of them and see which is the best, therefore different metaheuristics try to explore the hyperparameter search space in a clever way. \\
 	In the first part of this report there is a short description of the LSTM model and the genetic algorithm to refresh the basic concept. Then there is a description of the CVOA metaheuristic algorithm which will be combined with the LSTM for testing purposes, knowing that every model with appropriate encoding could potentially replace the LSTM. In the end there are some consideration about the efficacy of the method and the conclusion. 
 	
 	
 	This algorithm, as described in the referenced paper, promise very strong advantages:
 	\begin{itemize}
 		\item the Covid-19 statistics of propagation are well known from the scientific community therefore there is no need to tune them;
-		\item the spread automatically stops after several iteration, with no need to be configured; 
+		\item the spread of infected automatically stops after several iteration, with no need to be configured; 
 		\item the coronavirus high spreading rate is useful for exploring promising regions more
 		thoroughly (intensification) while the use of parallel strains ensures that all regions
 		of the search space are evenly explored (diversification).
 	\end{itemize}
 
 \section{Basic Concepts} \label{basicConcepts}
-CVOA is an algorithm used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the data this net want to fit.
+CVOA is an algorithm used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the input data.
 It has been decided to train a LSTM model with a dataset of sequences representing the number of infected of a virus (in our case again the Covid19) over the time. Here is needed to specify that either the metaheuristic or the LSTM deal with Covid19, however it is involved in two independent way:
 \begin{itemize}
 	\item the \textbf{CVOA is inspired from the Covid19}, simulating the generation of new individual with the spread of new infected;
@@ -129,7 +129,7 @@ It has been decided to train a LSTM model with a dataset of sequences representi
 
 
 \subsection{Long Short Term Memory}
-The LSTM model is a neural network based on a computational unit (Figure \ref{fig:computational_unit}) that can memorize the context (represented by the function $ c(t) $). Each unit receive as input the concatenation of $ x(t)h(t-1)c(t-1) $ where $ h(t) = x(t-1) $ and $ x(t) $ is the input from dataset.
+The LSTM model is a neural network based on a computational unit (Figure \ref{fig:computational_unit}) that can memorize the context (represented by the function $ c(t) $). Each unit receive as input the concatenation of $ x(t)h(t-1)c(t-1) $ where $ h(t) = x(t-1) $ and $ x(t) $ is the input sample from dataset at time $ t $.
 \begin{figure}[!h]
 	\includegraphics[width=\columnwidth]{img/computational_unit}
 	\caption{The computational unit of a LSTM with input from dataset $ x(t) $, output $ h(t) $ and context function $ c(t) $. The input of the unit at time $ t $ is $ x(t)h(t-1)c(t-1) $ .}
@@ -139,7 +139,7 @@ The LSTM model is a neural network based on a computational unit (Figure \ref{fi
 
 \begin{figure}[!h]
 	\includegraphics[width=\columnwidth]{img/LSTM}
-	\caption{The general structure of the LSTM used in the experiment}
+	\caption{The general structure of the LSTM used in the experiment. The green box enhance the two layers which can eventually be repeated and concatenated $ N $ times.}
 	\label{fig:LSTM}
 \end{figure}
 A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input values and a corresponding sequence of output.
@@ -182,7 +182,7 @@ The main components and functions performed by the GA are folded successively:
 
 \subsubsection{GA Constant Parameters}
 This subsection presents the main parameters used and which will be mentioned in the following sections.
-All probabilities involved in the GA are based on the real data of Coronavirus propagation model.
+All probabilities involved in the GA are based on the real data of Coronavirus propagation model, from the World Health Organization \cite{who}.
 \begin{itemize}
 \item $_PDIE$: An infected individual can die with a given probability.
 \item $_PSUPERSPREADER$: It is the probability that an individual spread the disease to a greater number of healthy individuals. After this condition is validated, two situations can be found: % TODO: cercare di fixare l'underscore _ che è osceno così e magari cambia il font dei nomi (senti fish)
@@ -309,9 +309,10 @@ In this report it was analyzed the CVOA metaheuristic which automatically estima
 Ad disadvantage, the number of infected in the first iterations is exponential and the execution time is still high.
 
 \subsection{Future Work}
+Interesting evaluation could be done comparing the CVOA-LSTM with other problem and other ML model like Convolution Neural Network. \\
 One of the possible improvement of the algorithm is to reduce the number of infected considering the metaphor of the production of a vaccine. This could be done by adding a percentage of  \textit{VACCINATED\_INDIVIDUAL} .\\
 Moreover, an open-source library would simplify the implementation of the CVOA algorithm. The NN model could be passed as parameter, with a method to determine the GA individual from the model and with the fitness function.\\
-Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death. 
+Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-Covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death. 
 \clearpage
 \onecolumn
 \section{Pseudo-Python Code}
