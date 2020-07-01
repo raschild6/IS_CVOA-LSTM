@@ -14,6 +14,7 @@
 \frenchspacing  					% DO NOT CHANGE THIS
 \setlength{\pdfpagewidth}{8.5in}  	% DO NOT CHANGE THIS
 \setlength{\pdfpageheight}{11in}  	% DO NOT CHANGE THIS
+\usepackage{listings} %Per inserire codice ***
 %\nocopyright
 %PDF Info Is REQUIRED.
 % For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
@@ -233,20 +234,29 @@ The individuals surviving the coronavirus in an epoch will infect new individual
 \subitem Ordinary spreader, with spreading rate given by $ORDINARY\_RATE$.
 \subitem Super-spreaders, with spreading rate given by $SUPERSPREADER\_RATE$.\\
 To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar ($_PTRAVEL$), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an $ORDINARY\_RATE$.
-
 \item Stop Criterion:
 The stop criterion of this algorithm, by construction, does not need to be controlled by any parameter. The recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. \\
 Additionally, due to time constraint, it is possible to set up a maximum number of iterations ($PANDEMIC\_DURATION$) to force the stop criterion. The social isolation measures also contributes to achieve it.
 \end{itemize}
 
 \section{CVOA Meta-heuristic}
-\subsubsection{Evolution Steps}
-Patient zero: fixed part + var part\\
-while (epochs) {\\
-propagateDisease ()\\
-bestIndividualFound: infected / recovered / deaths\\
-}\\
-\\
+Including the basic concepts, % TODO: aggiungere riferimenti alle sezioni che vengono richiamate
+ it is now possible to understand the overall functioning of the CVOA and analyze it in a more specific way.
+
+\subsection{CVOA Main Method}
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={CVOA main method}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+Patient zero: fixed part + var part
+while (epochs) {
+    propagateDisease ()
+    bestIndividualFound: 
+    infected - recovered - deaths
+}
+\end{lstlisting}
 1.propagateDisease () =\\
 • Start from patient zero\\
 • Step 1: Calculate each individual's fitness\\
