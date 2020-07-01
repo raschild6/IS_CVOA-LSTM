@@ -22,8 +22,18 @@ if __name__ == '__main__':
     batch = 512         #1024 (changed also in LSTM, CVOA)
 
     if sys.argv[1] == "t":
+        my_path = os.path.abspath(os.path.dirname(__file__))
+        path = os.path.join(my_path, "UK_resize.csv") # "covid-francia.csv")
+        # Load the dataset
+        data, scaler = load_data(path_to_data=path, useNormalization=True)
+        # Transform data to a supervised dataset
+        data = data_to_supervised(data, historical_window=9, prediction_horizon=1)
+        xtrain, xtest, ytrain, ytest, xval, yval = splitData(data, historical_window=9, test_size=.9, val_size=.1)
+        # Add shape to use LSTM network
+        xtrain, xtest, ytrain, ytest, xval, yval = adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval)
         model_path = sys.argv[2]
         model = keras.models.load_model(model_path)
+        model.compile(loss='mape', optimizer='adam', metrics=['mse', 'mae', 'mape'])
         results = model.evaluate(xtest, ytest)
         print(dict(zip(model.metrics_names, results)))
     else:
