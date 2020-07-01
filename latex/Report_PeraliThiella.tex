@@ -179,13 +179,13 @@ Let's now analyze the encoding method to obtain the individual of the genetic al
 	The genetic part of CVOA is built by following a standard Genetic Algorithm (GA) but adding and modifying some components.
 The main components and functions performed by the GA are folded successively:
 
-\subsection{GA Constant Parameters}
+\subsubsection{GA Constant Parameters}
 This subsection presents the main parameters used and which will be mentioned in the following sections.
 All probabilities involved in the GA are based on the real data of Coronavirus propagation model.
 \begin{itemize}
 \item $_PDIE$: An infected individual can die with a given probability.
 \item $_PSUPERSPREADER$: It is the probability that an individual spread the disease to a greater number of healthy individuals. After this condition is validated, two situations can be found: % TODO: cercare di fixare l'underscore _ che è osceno così e magari cambia il font dei nomi (senti fish)
-\subitem $ORDINARY\_RATE$: It is a standard infected individual (not a super-spreader) and this rate corresponde to its infection rate
+\subitem $ORDINARY\_RATE$: It is a standard infected individual (not a super-spreader) and this rate correspondes to its infection rate
 \subitem $SUPERSPREADER\_RATE$: If the infected individual turns out to be super-spreader, this is its infection rate which is at least more than double of Ordinary-Rate
 \item $_PREINFECTION$: Probability that a recovered individual can be re-infected.
 \item $_PISOLATION$: It corresponds to the probability of applying measures for social isolation to an individual. This parameter helps to reduce the exponential growth of the infected population after each iteration. Therefore, a high value must be assigned to this probability. Note that this value is not well defined by the real pandemic data because different countries have made different choices about it. 
@@ -194,7 +194,8 @@ All probabilities involved in the GA are based on the real data of Coronavirus p
 \end{itemize}
 
 \subsubsection{Population Individuals}
-	As explained above, the individuals of the population are composed of two arrays of integer values (fixed and variable length). They are also divided into three categories:
+	As explained above %magari cita dove
+, the individuals of the population are composed of two arrays of integer values (fixed and variable length). They are also divided into three categories:
 \begin{itemize}
 \item Dead
 \item Recovered
@@ -223,16 +224,22 @@ First, a signed change amount \begin{math}C \in \{-2 ,-1, +1, +2\}\end{math} is 
 \item \begin{math}C=+1 \iff P<0,75\end{math}
 \item \begin{math}C=+2 \iff P \leq 1\end{math}
 \end{itemize}
-Once the amount of change is determined, the new value for the infected element is computed. If its previous value is $V$ , then the new value after the single position mutation will be \begin{math}V\textsuperscript{1} = V + C\end{math}. If the new value $V\textsuperscript{1}$ exceeds the limits defined for the individual codification, such value is set to the maximum or minimum allowed value accordingly.\\
-• Numerous mutations
+Once the amount of change is determined, the new value for the infected element is computed. If its previous value is $V$ , then the new value after the single position mutation will be \begin{math}V\textsuperscript{1} = V + C\end{math}. If the new value $V\textsuperscript{1}$ exceeds the limits defined for the individual codification, such value is set to the maximum or minimum allowed value accordingly.
+%• Numerous mutations
 \item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a Propagation Function has been developed.
 \item Propagation Function:
-%• Super spreaders => New infected and travel probability\\
-%• Population evolution every Iteration\\
+Some of the infected individuals die ($_PDIE$). Such individuals can no longer infect new individuals.
+The individuals surviving the coronavirus in an epoch will infect new individuals (intensification). According to the probability $_PSUPERSPREADER$, an individual can spread the desease with two rate:
+\subitem Ordinary spreader, with spreading rate given by $ORDINARY\_RATE$.
+\subitem Super-spreaders, with spreading rate given by $SUPERSPREADER\_RATE$.\\
+To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar ($_PTRAVEL$), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an $ORDINARY\_RATE$.
+
 \item Stop Criterion:
-%One of the most interesting features of the proposed approach lies on its ability to end without the need of controlling any parameter. This situation occurs because the recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. Additionally, a preset number of iterations (PANDEMIC DURATION) can be added to the stop criterion. The social isolation measures also contributes to reaching the stop criterion.
+The stop criterion of this algorithm, by construction, does not need to be controlled by any parameter. The recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. \\
+Additionally, due to time constraint, it is possible to set up a maximum number of iterations ($PANDEMIC\_DURATION$) to force the stop criterion. The social isolation measures also contributes to achieve it.
 \end{itemize}
 
+\section{CVOA Meta-heuristic}
 \subsubsection{Evolution Steps}
 Patient zero: fixed part + var part\\
 while (epochs) {\\
@@ -280,7 +287,6 @@ case 1: the fixed part-1 changes\\
 case 2: change the varpart\\
 => choose max and min range and change from the old value to the previously calculated pos\\
 
-\section{CVOA Metaheuristic}
 
 \section{Experiment Evaluation}
 
