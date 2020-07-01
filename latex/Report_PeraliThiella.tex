@@ -169,7 +169,7 @@ In Table \ref{tab:params} there are the tuned hyperparameters values chosen for 
 
 Let's now analyze the encoding method to obtain the individual of the genetic algorithm from the LSTM trained model. Each trained model can be identified with its training hyperparameters value, moreover there are some of them which are set in every model (fixed parameters) and other that are not (variable parameter). In Figure \ref{fig:individual} it's shown the general definition of individual of CVOA genetic algorithm. As an example, if a model is trained with $ LR = 10^{-1}, D = 0.4, N = 2, L_1 = 50, L_2 = 25 $ the corresponding individual would be represented by $ [1, 8, 2] + [2, 1] $. Note that the value inside the parenthesis are the index of the corresponding value in Table \ref{tab:params}. 
 
-\begin{figure}
+\begin{figure}[!h]
 	\caption{The representation of a LSTM as individual of the GA. Learning Rate ($ LR $), Dropout ($ D $ and Number of LSTM layer ($ N $) compose the fixed part of the individual and the number of LSTM unit ($ L_i $) for each LSTM layer ($ i $) represent the variable part. Note that the "+" symbol stand for concatenation.}
 	\includegraphics[width=\columnwidth]{img/individual}
 	\label{fig:individual}
