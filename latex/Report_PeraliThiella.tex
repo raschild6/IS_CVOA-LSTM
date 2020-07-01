@@ -99,7 +99,7 @@ Luca Perali, Michele Thiella
 \maketitle
 
 \begin{abstract}
-	In recent years, Machine Learning (ML) has been gaining unprecedented visibility and success in the history of artificial intelligence, thanks certainly to the wide range of problems in which it can be applied: Machine Vision, Keyword Spotting Analysis, Data Sequence Prediction, etc. \\
+	In recent years, Machine Learning (ML) has been gaining unprecedented visibility and success in the history of artificial intelligence, thanks certainly to the wide range of problems in which it can be applied: Machine Vision, Keyword Spotting Analysis, Data Sequence Forcasting, etc. \\
 	In the training phase of the ML algorithms, the programmer have to find good hyperparameters capable of obtaining the best results in the test phase. Due to the exponential number of possible combination of hyperparameters, this process can be time consuming. As these hyperparameters strongly depends on the type of problem being faced and on the dataset used, it is not possible to share parameters values between problems or models. \\
 	In this project we wanted to deepen a metaheuristic method based on evolutionary genetics, named Coronavirus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a metaheuristics inspired by the virus spread within the population, using it for the automatic calculation of hyperparameters for the training phase of an ML algorithm. This approach would like to reduce the time needed to find good hyperparameters to train the model for a specific problem.
 	
@@ -142,8 +142,8 @@ The LSTM model is a neural network based on a computational unit (Figure \ref{fi
 	\caption{The general structure of the LSTM used in the experiment}
 	\label{fig:LSTM}
 \end{figure}
-A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input data and a corresponding sequence of output data.
-In our specific case the dataset is time sequence of the number of infected of Covid19 in different country.\\ The structure of NN is as in Figure \ref{fig:LSTM}.\\ 
+A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input values and a corresponding sequence of output.
+In our specific case the dataset is the time sequence of the number of infected of Covid19 in Italy. During the input preprocessing the complete sequence is divided in shorter sequences of length $ historical\_windows $ called sample. Each sample is shifted of 1 between each other and for each input sample is returned a sequence of length $ prediction\_horizon $ which represent the predicted number of infected in the next days. This two parameter are manually set and depend from external factor, such as the number of sample in the input sequence. \\ The structure of NN is as in Figure \ref{fig:LSTM}.\\ 
 In Table \ref{tab:params} there are the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ 12*6*8*6 = 3456 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
 \begin{table}[!h]
 	\caption{Table of the values to tune for the model. The chosen value for each parameter are: number of units per layer $ L_i $, Learning Rate ($ LR $), dropout percentage ($ D $) and number of LSTM layers ($ N $). }
@@ -299,12 +299,19 @@ This procedure represents the spread of the disease from one individual to anoth
 
 \section{Experiment Evaluation}
 
-\section{Discussion of Differences}
-
 \section{Conclusion}
+In this report it was analyzed the CVOA metaheuristic which automatically estimate some good value for the hyperparameter for a ML algorithm. As seen there are two main advantages:
+\begin{itemize}
+	\item the hyperparameter of the GA are that known from the coronavirus, preventing from tuning them manually;
+	\item the algorithm automatically terminate after certain number of iterations,
+	\item the metaheuristic automatically adapt on the context of the ML problem, indeed it could be used either in machine vision or in data sequence forecasting.
+\end{itemize}
+Ad disadvantage, the number of infected in the first iterations is exponential and the execution time is still high.
 
 \subsection{Future Work}
-
+One of the possible improvement of the algorithm is to reduce the number of infected considering the metaphor of the production of a vaccine. This could be done by adding a percentage of  \textit{VACCINATED\_INDIVIDUAL} .\\
+Moreover, an open-source library would simplify the implementation of the CVOA algorithm. The NN model could be passed as parameter, with a method to determine the GA individual from the model and with the fitness function.\\
+Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death. 
 \clearpage
 \onecolumn
 \section{Pseudo-Python Code}
