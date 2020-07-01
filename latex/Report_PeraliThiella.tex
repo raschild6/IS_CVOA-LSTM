@@ -142,8 +142,8 @@ The LSTM model is a neural network based on a computational unit (Figure \ref{fi
 	\caption{The general structure of the LSTM used in the experiment}
 	\label{fig:LSTM}
 \end{figure}
-A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input data and a corresponding sequence of output data.
-In our specific case the dataset is time sequence of the number of infected of Covid19 in different country.\\ The structure of NN is as in Figure \ref{fig:LSTM}.\\ 
+A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input values and a corresponding sequence of output.
+In our specific case the dataset is the time sequence of the number of infected of Covid19 in Italy. During the input preprocessing the complete sequence is divided in shorter sequences of length $ historical_windows $ called sample. Each sample is shifted of 1 between each other and for each input sample is returned a sequence of length $ prediction_horizon $ which represent the predicted number of infected in the next days. This two parameter are manually set and depend from external factor, such as the number of sample in the input sequence. \\ The structure of NN is as in Figure \ref{fig:LSTM}.\\ 
 In Table \ref{tab:params} there are the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ 12*6*8*6 = 3456 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
 \begin{table}[!h]
 	\caption{Table of the values to tune for the model. The chosen value for each parameter are: number of units per layer $ L_i $, Learning Rate ($ LR $), dropout percentage ($ D $) and number of LSTM layers ($ N $). }
