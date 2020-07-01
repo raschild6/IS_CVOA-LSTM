@@ -82,7 +82,7 @@
 %
 \setlength\titlebox{2.5in} % If your paper contains an overfull \vbox too high warning at the beginning of the document, use this
 % command to correct it. You may not alter the value below 2.5 in
-\title{Prediction through Genetic Meta-Heuristic algorithm \\ and Long Short Term Memory based on Covid-19}
+\title{Prediction through Genetic Metaheuristic algorithm \\ and Long Short Term Memory based on Covid-19}
 %Your title must be in mixed case, not sentence case. 
 % That means all verbs (including short verbs like be, is, using,and go), 
 % nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
@@ -99,16 +99,27 @@ Luca Perali, Michele Thiella
 
 \begin{abstract}
 	In recent years, Machine Learning (ML) has been gaining unprecedented visibility and success in the history of artificial intelligence, thanks certainly to the wide range of problems in which it can be applied: Machine Vision, Keyword Spotting Analysis, Data Sequence Prediction, etc. \\
-	In the training phase of the ML algorithms, the programmer have to find good hyper-parameters capable of obtaining the best results in the test phase. Due to the exponential number of possible combination of hyper-parameters, however this process can be time consuming as these hyper-parameters strongly depends on the type of problem being faced and on the dataset used, not making it possible to share preset parameters. \\
-	In this project we wanted to deepen a meta-heuristic method based on evolutionary genetics, named Corona-Virus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a meta-heuristics inspired by the virus spread within the population, using it for the automatic calculation of hyper-parameters for the training phase of an ML algorithm.
+	In the training phase of the ML algorithms, the programmer have to find good hyperparameters capable of obtaining the best results in the test phase. Due to the exponential number of possible combination of hyperparameters, this process can be time consuming. As these hyperparameters strongly depends on the type of problem being faced and on the dataset used, it is not possible to share parameters values between problems or models. \\
+	In this project we wanted to deepen a metaheuristic method based on evolutionary genetics, named Coronavirus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a metaheuristics inspired by the virus spread within the population, using it for the automatic calculation of hyperparameters for the training phase of an ML algorithm. This approach would like to reduce the time needed to find good hyperparameters to train the model for a specific problem.
+	
 \end{abstract}
 
 \section{Introduction}
-	While developing a ML algorithm, as usual, it's required to define the structure of a model and the parameter to train that model in a data-set. Once defined the parameter to tune, and their domain, there is usually a huge number of configuration of the parameters to simply try all of them and see which is the best, therefore different meta-heuristics try to help in this choice.\\
-	In the first part of this report there is a short description of the LSTM model and the genetic algorithm to refresh the basic concept. Then there is a description of the CVOA meta-heuristic algorithm which will be combined with the LSTM for testing purposes. In the end there are some consideration about the efficacy of the method and the conclusion.
+	While developing a ML algorithm, as usual, it's required to define the structure of a model and the parameter to train that model in a dataset. Once defined the parameter to tune, and their domain, there is usually a huge number of configuration of the parameters to simply try all of them and see which is the best, therefore different metaheuristics try to explore the hyperparameter search space in a clever way. \\
+	In the first part of this report there is a short description of the LSTM model and the genetic algorithm to refresh the basic concept. Then there is a description of the CVOA metaheuristic algorithm which will be combined with the LSTM for testing purposes, knowing that every model with appropriate encoding could potentially replace the LSTM. In the end there are some consideration about the efficacy of the method and the conclusion. 
+	
+	
+	This algorithm, as described in the referenced paper, promise very strong advantages:
+	\begin{itemize}
+		\item the Covid-19 statistics of propagation are well known from the scientific community therefore there is no need to tune them;
+		\item the spread automatically stops after several iteration, with no need to be configured; 
+		\item the coronavirus high spreading rate is useful for exploring promising regions more
+		thoroughly (intensification) while the use of parallel strains ensures that all regions
+		of the search space are evenly explored (diversification).
+	\end{itemize}
 
 \section{Basic Concepts}
-First of all, the CVOA algorithm is used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the data this net want to fit.
+CVOA is an algorithm used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the data this net want to fit.
 It has been decided to train a LSTM model with a dataset of sequences representing the number of infected of a virus (in our case again the Covid19) over the time. Here is needed to specify that either the metaheuristic or the LSTM deal with Covid19, however it is involved in two independent way:
 \begin{itemize}
 	\item the \textbf{CVOA is inspired from the Covid19}, simulating the generation of new individual with the spread of new infected;
@@ -131,35 +142,38 @@ The LSTM model is a neural network based on a computational unit (Figure \ref{fi
 	\label{fig:LSTM}
 \end{figure}
 A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input data and a corresponding sequence of output data.
-In our specific case it has been created the structure of NN as in Figure \ref{fig:LSTM}.\\ 
-In Table \ref{tab:params} there is the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ 12*6*8*6 = 3456 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
+In our specific case the dataset is time sequence of the number of infected of Covid19 in different country.\\ The structure of NN is as in Figure \ref{fig:LSTM}.\\ 
+In Table \ref{tab:params} there are the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ 12*6*8*6 = 3456 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
 \begin{table}[!h]
 	\caption{Table of the values to tune for the model. The chosen value for each parameter are: number of units per layer $ L_i $, Learning Rate ($ LR $), dropout percentage ($ D $) and number of LSTM layers ($ N $). }
 	\begin{tabular}{ccccc}
-		& $ L_i $ & $ LR $ 			& $ D $ & $ N $  \\ 
-\hline
-		1 & 25   & $ 10^{-1} $	& 0.05 & 1 \\
-		2 & 50   & $ 10^{-2} $  & 0.10  & 2 \\
-		3 & 75   & $ 10^{-3} $  & 0.15 & 3 \\
-		4 & 100  & $ 10^{-4} $  & 0.20  & 4 \\
-		5 & 125  & $ 10^{-5} $  & 0.25 & 5 \\
-		6 & 150  & $ 10^{-6} $  & 0.30  & 6 \\
-		7 & 175  &  			& 0.35 &   \\
-		8 & 200  &  			& 0.40  &   \\
-		9 & 225  &  			&      &   \\
-		10 & 250 &  			&      &   \\
-		11 & 275 &  			&      &   \\
-		12 & 300 &  			&      &   \\
+		   &$L_i$ &   $ LR $ 	& $D $ & $N$\\ 
+	\hline
+		1  & 25   & $ 10^{-1} $	& 0.05 & 1	\\
+		2  & 50   & $ 10^{-2} $ & 0.10 & 2 	\\
+		3  & 75   & $ 10^{-3} $ & 0.15 & 3 	\\
+		4  & 100  & $ 10^{-4} $ & 0.20 & 4 	\\
+		5  & 125  & $ 10^{-5} $ & 0.25 & 5 	\\
+		6  & 150  & $ 10^{-6} $ & 0.30 & 6 	\\
+		7  & 175  &  			& 0.35 &   	\\
+		8  & 200  &  			& 0.40 &   	\\
+		9  & 225  &  			&      &   	\\
+		10 & 250  &  			&      &   	\\
+		11 & 275  &  			&      &   	\\
+		12 & 300  &  			&      &   	\\
 	\end{tabular}
 
-\label{tab:params}
+	\label{tab:params}
 \end{table}
 
-Let's now analyze the coding method to obtain the individual of the genetic algorithm from the LSTM trained model.
+Let's now analyze the encoding method to obtain the individual of the genetic algorithm from the LSTM trained model. Each trained model can be identified with its training hyperparameters value, moreover there are some of them which are set in every model (fixed parameters) and other that are not (variable parameter). In Figure \ref{fig:individual} it's shown the general definition of individual of CVOA genetic algorithm. As an example, if a model is trained with $ LR = 10^{-1}, D = 0.4, N = 2, L_1 = 50, L_2 = 25 $ the corresponding individual would be represented by $ [1, 8, 2] + [2, 1] $. Note that the value inside the parenthesis are the index of the corresponding value in Table \ref{tab:params}. 
 
+\begin{figure}
+	\caption{The representation of a LSTM as individual of the GA. Learning Rate ($ LR $), Dropout ($ D $ and Number of LSTM layer ($ N $) compose the fixed part of the individual and the number of LSTM unit ($ L_i $) for each LSTM layer ($ i $) represent the variable part. Note that the "+" symbol stand for concatenation.}
+	\includegraphics[width=\columnwidth]{img/individual}
+	\label{fig:individual}
+\end{figure}
 
-Nel nostro caso si propone di variare tra gli iperparametri il learning rate, la percentuale di Dropout e il numero di layer LSTM con il numero di unità sui rispettivi layer.
-Fissiamo in tabella i valori dei parametri che vogliamo valutare e per collegarci all’algoritmo genetico definiamo l’individuo della popolazione come una n-upla formata dagli indici deii valori dei parametri corrispondenti. Supponendo di aver scelto un LR di 0.001, una percentuale di Dropout del 5 % e un singolo Layer LSTM con 4 unità computazionali, l’individuo corrispondente è rappresentato dalla seguente tupla.
 
 \subsection{Genetic Algorithm}
 	The genetic part of CVOA is built by following a standard Genetic Algorithm (GA) but adding and modifying some components.
@@ -266,7 +280,7 @@ case 1: the fixed part-1 changes\\
 case 2: change the varpart\\
 => choose max and min range and change from the old value to the previously calculated pos\\
 
-\section{CVOA Meta-heuristic}
+\section{CVOA Metaheuristic}
 
 \section{Experiment Evaluation}
 
