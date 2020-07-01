@@ -119,7 +119,7 @@ Luca Perali, Michele Thiella
 		of the search space are evenly explored (diversification).
 	\end{itemize}
 
-\section{Basic Concepts}
+\section{Basic Concepts} \label{basicConcepts}
 CVOA is an algorithm used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the data this net want to fit.
 It has been decided to train a LSTM model with a dataset of sequences representing the number of infected of a virus (in our case again the Covid19) over the time. Here is needed to specify that either the metaheuristic or the LSTM deal with Covid19, however it is involved in two independent way:
 \begin{itemize}
@@ -211,7 +211,7 @@ There is another category in which only some infected individuals can belong, ac
 \item New-Infected: It holds all the new individuals that have been infected in the previous epoch.
 \end{itemize}
 
-\subsubsection{Main Steps} \label{mainSteps}
+\subsubsection{Main Steps} \label{sec:mainSteps}
 \begin{itemize}
 \item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
@@ -239,28 +239,63 @@ Additionally, due to time constraint, it is possible to set up a maximum number 
 \end{itemize}
 
 \section{CVOA Meta-heuristic}
-Including the basic concepts, % TODO: aggiungere riferimenti alle sezioni che vengono richiamate
- it is now possible to understand the overall functioning of the CVOA and analyze it in a more specific way.
+Including the basic concepts in section \ref{basicConcepts}, it is now possible to understand the overall functioning of the CVOA and analyze it in a more specific way.
+Only the most important methods will be presented. Starting with the main method of the algorithm, shown as follows:
 
-\subsection{CVOA Main Method}
-The main method of the algorithm is as follows:
 \lstset{language=Python}
 \lstset{frame=lines}
 \lstset{caption={CVOA main method}}
-\lstset{label={lst:code_direct}}
+\lstset{label={CVOAmain}}
 \lstset{basicstyle=\footnotesize}
 \lstset{showstringspaces=false}
+\lstset{numbers=left}				
+\lstset{stepnumber=1}
 \begin{lstlisting}[mathescape=true]
 PZ = {fixed part} + {var part}
 while (PANDEMIC_DURATION $\geq$ 0 && epidemic) {
     propagateDisease()
-    getBestIndividual()
     if (infected_population is empty)
         epidemic = false
     PANDEMIC_DURATION --
 }
 \end{lstlisting}
-As mentioned in section \ref{mainSteps}, the initial population is composed of a single individual (PZ), with values of the arrays that compose it randomly generated (within their limits).Then a loop is performed until the stop criterion is reached. Each iteration of the cycle corresponds to an epoch of the GA, in each epoch, initially the disease is propagated and then the best current individual is found. Once the stop conditions are updated, the cycle starts again.
+As mentioned in section \ref{mainSteps}, the initial population is composed of a single individual (PZ), with values of the arrays that compose it randomly generated (within their limits). Then a loop is performed until the stop criterion is reached. Each iteration of the cycle corresponds to an epoch of the GA, in each epoch the disease is propagated. Once the stop conditions are updated, the cycle starts again.\\
+Analyzing specifically the method contained:
+\subsection{propagateDisease()}
+In row number 3 of Listing \ref{CVOAmain} there is the $propagateDisease()$ method. This method joins fitness evaluations, population selection, crossover and mutations functions and it is illustrated in the Pseudo-Python Code page at Listing \ref{propagateDisease}.\\
+Looking inside, it is composed by several steps :
+\begin{itemize}
+\item Row 3: Fitness Evaluation  
+\item Row 7: Update best individual
+\item Row 12,16: Choose dead and super-spreader individuals
+\item Row 25: Infect new individuals
+\item Row 29: Looking re-infections
+\item Row 33,34: Prepare populations for the next epoch.
+\end{itemize}
+At first, for each infected individual a $Fitness\_function$ is executed. As explained in section \ref{sec:mainSteps}, it returns values of MAPE, one for each.\\ %aggiungi LSTM
+Then the infected list of individuals is sorted in increasing order by fitness (MAPE) and so, the first individual corresponds to the best and therefore the one with the lowest MAPE value. Remember that the lower the MAPE value, the more accurate the forecast with real data.
+For each epoch, this individual is stored in $best\_individual$ if its fitness is lower that the current one. In this way, whenever the agorithm is stopped, the best hyper-parameters found up to now are always available.\\
+The next step is to update the dead individuals and to assign the super-spreader property. Two indexes, as percentages of the infected list size, are used to divide the infected list. The infected individuals contained between $0$ to $idx\_super\_spreader$ also become super-spreaders while individuals from $idx\_deaths$ onwards die.\\
+Every infected individual infects a certain number of new individuals ($nInfected$, Row 17 or 19), added to $new\_infected\_list$. The process of infection (Row 25) is described in the next section. Once the re-infections are found, the populations are updated in which the $infected$ list is added to $recovered$ list and $new\_infected\_list$ become $infected$ list. Finally the method ends.
+
+\subsection{individual.infected(travel\_distance)}
+This method, shown in Listing \ref{lnfected}, is called in Row 25 of Listing \ref{propagateDisease}. It represents the way in which an individual can infect other ones. As in the previous method, it also consists of several steps:
+\begin{itemize}
+\item Row 2: Infection Probability
+\item Row 3: Single Position Mutation
+\item Row 8: Traveler Individual
+\item Row 14-23: Generation of New Infected
+\end{itemize}
+First of all, as mentioned earlier, there is no crossover for generating new individuals. An individual is created starting from the structure of another and applying one or more single position mutations to it. Therefore, the individual who infected a $nInfected$ new individuals calls this method $nInfected$ times. Every time, this individual is copied to a new individual ($mutated$) as a first step and then all the mutation are applied.\\
+Starting from Row 2, with probability $\frac{1}{3}$, a single position mutation (section \ref{sec:mainSteps}) is applied at third value of the $fixed\_part$ array of the $mutated$ individual. If the mutation occurs, the $variable\_part$ is also resized according to the mutation value and the $_PTRAVEL$ is set to $-1$.
+In this way, at Row 8, two situations are possibile:
+\begin{enumerate}
+\item $_PTRAVEL = -1$: Always if the mutation occurred or in case mutation fails but the individual who infected had a probability of $-1$ 
+\item $_PTRAVEL = 1$: Because the individual who infected had a probability of $1$ and mutation fails 
+\end{enumerate}
+This probability determines the number of mutations applied to $mutated$.\\
+From Row 14 to 23, these mutations are performed. Every mutation is a single position mutation of a random value of $fixed\_part$ or $variable\_part$ of $mutated$, except the third $fixed\_part$ value and except values that have already been changed.\\
+This procedure represents the spread of the disease from one individual to another and therefore the creation of the population of infected individuals of the following epoch.
 
 \section{Experiment Evaluation}
 
@@ -276,20 +311,21 @@ As mentioned in section \ref{mainSteps}, the initial population is composed of a
 \lstset{language=Python}
 \lstset{frame=lines}
 \lstset{caption={propagateDisease method}}
-\lstset{label={lst:code_direct}}
+\lstset{label={propagateDisease}}
 \lstset{basicstyle=\footnotesize}
 \lstset{showstringspaces=false}
 \lstset{numbers=left}					% show row number (to use them in code?)
 \lstset{stepnumber=1}
 \begin{lstlisting}[mathescape=true]
-Define PZ
+new_infected_list = []
 for (individual in infected_population):
     individual.fitness = fitness_function(individual)
 
-infected = sorted(infected, key=lambda i: i.fitness)
-best_solution = population[0]
-idx_super_spreader = S$\textsubscript{\%}$ * len(infected)
-idx_deaths = D$\textsubscript{\%}$ * len(infected)
+infected_population = sorted(infected, key=lambda i: i.fitness)
+if(best_solution.fitness > infected_population[0].fitness):
+    best_solution = infected_population[0]
+idx_super_spreader = S$\textsubscript{\%}$ * len(infected_population)
+idx_deaths = D$\textsubscript{\%}$ * len(infected_population)
 
 for (individual in infected_population):
     if (idx_individual $\geq$ idx_deaths):
@@ -306,28 +342,28 @@ for (individual in infected_population):
                 traverl_distance = 1
         while (nInfected > 0):
             new_infected = individual.infect(travel_distance)
-            if (new_infected $\notin$ deaths || infected || new_infected_list || recovered): 
+            if (new_infected $\notin$ dead_population || 
+                                infected_population || new_infected_list || recovered_population): 
                 new_infected_list.add(new_infected)
-            if (new_infected $\in$ recovered && new_infected $\notin$ new_infected_list): 
+            if (new_infected $\in$ recovered_population && new_infected $\notin$ new_infected_list): 
                 if (random.random() < $_PREINFECTION$): 
                     new_infected_list.add(new_infected)
-                    recovered.remove(new_infected)
+                    recovered_population.remove(new_infected)
             nInfected --
-        recovered.add(infected) 
-        infected = new_infected_list
+        recovered_population.add(infected) 
+        infected_population = new_infected_list
 \end{lstlisting}
-\vspace{5mm} %5mm vertical space
 \lstset{language=Python}
 \lstset{frame=lines}
-\lstset{caption={individual.infected method}}
-\lstset{label={lst:code_direct}}
+\lstset{caption={individual.infected(travel\_distance) method}}
+\lstset{label={lnfected}}
 \lstset{basicstyle=\footnotesize}
 \lstset{showstringspaces=false}
 \lstset{numbers=left}				
 \lstset{stepnumber=1}
 \begin{lstlisting}[mathescape=true]
 mutated = deepcopy(individual)
-if (random.randin(0, 2) > $\frac{1}{3}$)
+if (random.randin(0, 2) == 0)
     value = mutated.single_position_mutation(individual.fixed_pard[2])
     mutated.var_part.resize(value)
     travel_distance = -1 
@@ -337,7 +373,6 @@ if (travel_distance < 0):
     nMutated = random.randint (0, total_size-1)
 else: 
     nMutated = 1
-
 count = 0
 mutated_positions = []
 while (count < nMutated):
@@ -347,7 +382,7 @@ while (count < nMutated):
             max_value, min_value = MAX_VAL_FIXED_PART, MIN_VAL_FIXED_PART
         else:
             max_value, min_value = MAX_VAL_VAR_PART, MIN_VAL_VAR_PART
-        mutated_position[pos] = random.randint(min, max)
+        mutated_position[pos] = random.randint(min_value, max_value)
 
     count ++
 \end{lstlisting}
