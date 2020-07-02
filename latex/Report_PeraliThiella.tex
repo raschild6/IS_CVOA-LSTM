@@ -103,7 +103,7 @@ Luca Perali, Michele Thiella
 \begin{abstract}
 	In recent years, Machine Learning (ML) has been gaining unprecedented visibility and success in the history of artificial intelligence, thanks certainly to the wide range of problems in which it can be applied: Machine Vision, Keyword Spotting Analysis, Data Sequence Forcasting, etc. \\
 	In the training phase of the ML algorithms, the programmer have to find good hyperparameters capable of obtaining the best results in the test phase. Due to the exponential number of possible combination of hyperparameters, this process can be time consuming. As these hyperparameters strongly depends on the type of problem being faced and on the dataset used, it is not possible to share parameters values between problems or models. \\
-	In this project we wanted to deepen a metaheuristic method based on evolutionary genetics, named Coronavirus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a metaheuristics inspired by the virus spread within the population, using it for the automatic calculation of hyperparameters for the training phase of an ML algorithm. This approach would like to reduce the time needed to find good hyperparameters to train the model for a specific problem.
+	In this project we wanted to deepen a metaheuristic method based on evolutionary genetics, named Coronavirus Optimization Algorithm (CVOA) \cite{martnezlvarez2020coronavirus}, which is a metaheuristics inspired by the virus spread within the population, using it for the automatic calculation of hyperparameters for the training phase of an ML algorithm. The Virus Optimization Algorithm (VOA) was proposed by Liang and Cuevas-Juárez in 2016 \cite{LiangYun-ChiaJuarezJosue} and later improved in \cite{Liang2020}. This approach would like to reduce the time needed to find good hyperparameters to train the model for a specific problem.
 	
 \end{abstract}
 
@@ -244,8 +244,10 @@ Additionally, due to time constraint, it is possible to set up a maximum number 
 \end{itemize}
 
 \section{CVOA Meta-heuristic}
+The two computational techniques (deep learning and CVOA), used to found the best hyperparameter values, is very common in machine learning for optimizing models during the training process \cite{Calvet, Darwish2019ASO,Devikanniga}.\\
 Including the basic concepts in Section \ref{sec:basicConcepts}, it is now possible to understand the overall functioning of the CVOA and analyze it in a more specific way.
-Only the most important methods will be presented. Starting with the main method of the algorithm, shown as follows:
+Only the most important methods will be presented.\\
+ Starting with the main method of the algorithm, shown as follows:
 
 \lstset{language=Python}
 \lstset{frame=lines}
