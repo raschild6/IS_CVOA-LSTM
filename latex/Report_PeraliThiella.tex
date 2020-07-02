@@ -194,7 +194,7 @@ All probabilities involved in the GA are based on the real data of Coronavirus p
 \item $P_{REINFECTION}$: Probability that a recovered individual can be re-infected.
 \item $P_{ISOLATION}$: It corresponds to the probability of applying measures for social isolation to an individual. This parameter helps to reduce the exponential growth of the infected population after each iteration. Therefore, a high value must be assigned to this probability. Note that this value is not well defined by the real pandemic data because different countries have made different choices about it. 
 \item $P_{TRAVEL}$: This probability simulates how an infected individual can travel to any place in the world and can infect healthy individuals.
-\item $PANDEMIC\_DURATION$: This parameter simulates the duration of the pandemic.
+\item \textit{PANDEMIC\_DURATION}: This parameter simulates the duration of the pandemic.
 \end{itemize}
 
 \subsubsection{Population Individuals}
@@ -219,7 +219,7 @@ There is another category in which only some infected individuals can belong, ac
 \begin{itemize}
 \item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
-\item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
+\item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value $ MAPE = \frac{1}{n} $. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
 \item Mutation: The basic process for the mutation is the single position mutation. It corresponds to the change of a value of a specific element in the fixed or variable array of an individual.
 First, a signed change amount \begin{math}C \in \{-2 ,-1, +1, +2\}\end{math} is randomly determined using the following criteria. A random real number $P$ between $0$ and $1$ is generated using a uniform distribution. The change amount will be:
 \begin{itemize}
@@ -234,12 +234,12 @@ Once the amount of change is determined, the new value for the infected element 
 \item Propagation Function:
 Some of the infected individuals die ($P_{DIE}$). Such individuals can no longer infect new individuals.
 The individuals surviving the coronavirus in an epoch will infect new individuals (intensification). According to the probability $P_{SUPERSPREADER}$, an individual can spread the desease with two rate:
-\subitem Ordinary spreader, with spreading rate given by $ORDINARY\_RATE$.
-\subitem Super-spreaders, with spreading rate given by $SUPERSPREADER\_RATE$.\\
-To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar ($P_{TRAVEL}$), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an $ORDINARY\_RATE$.
+\subitem Ordinary spreader, with spreading rate given by \textit{ORDINARY\_RATE}.
+\subitem Super-spreaders, with spreading rate given by \textit{SUPERSPREADER\_RATE}.\\
+To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar (P_{TRAVEL}), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an \textit{ORDINARY\_RATE}.
 \item Stop Criterion:
 The stop criterion of this algorithm, by construction, does not need to be controlled by any parameter. The recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. \\
-Additionally, due to time constraint, it is possible to set up a maximum number of iterations ($PANDEMIC\_DURATION$) to force the stop criterion. The social isolation measures also contributes to achieve it.
+Additionally, due to time constraint, it is possible to set up a maximum number of iterations (\textit{PANDEMIC\_DURATION}) to force the stop criterion. The social isolation measures also contributes to achieve it.
 \end{itemize}
 
 \section{CVOA Meta-heuristic}
