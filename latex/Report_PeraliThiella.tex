@@ -189,8 +189,8 @@ All probabilities involved in the GA are based on the real data of Coronavirus p
 \begin{itemize}
 \item $P_{DIE}$: An infected individual can die with a given probability.
 \item $P_{SUPERSPREADER}$: It is the probability that an individual spread the disease to a greater number of healthy individuals. After this condition is validated, two situations can be found: % TODO: cercare di fixare l'underscore _ che è osceno così e magari cambia il font dei nomi (senti fish)
-\subitem $ORDINARY\_RATE$: It is a standard infected individual (not a super-spreader) and this rate correspondes to its infection rate
-\subitem $SUPERSPREADER\_RATE$: If the infected individual turns out to be super-spreader, this is its infection rate which is at least more than double of Ordinary-Rate
+\subitem \textit{ORDINARY\_RATE}: It is a standard infected individual (not a super-spreader) and this rate correspondes to its infection rate
+\subitem \textit{SUPERSPREADER\_RATE}: If the infected individual turns out to be super-spreader, this is its infection rate which is at least more than double of Ordinary-Rate
 \item $P_{REINFECTION}$: Probability that a recovered individual can be re-infected.
 \item $P_{ISOLATION}$: It corresponds to the probability of applying measures for social isolation to an individual. This parameter helps to reduce the exponential growth of the infected population after each iteration. Therefore, a high value must be assigned to this probability. Note that this value is not well defined by the real pandemic data because different countries have made different choices about it. 
 \item $P_{TRAVEL}$: This probability simulates how an infected individual can travel to any place in the world and can infect healthy individuals.
@@ -219,7 +219,8 @@ There is another category in which only some infected individuals can belong, ac
 \begin{itemize}
 \item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
-\item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value $ MAPE = \frac{1}{n} $. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
+\item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE), $ MAPE = \frac{1}{n}\sum_{t=1}^{n}|\frac{A_t-F_t}{A_t}| $ where $ A_t $ is the predicted value and $ F_t $ is the correct value at time $ t $. It is calculated at the end of the LSTM train using the validation set and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.\\
+As we can see from the formula, if $ A_t $ is near to 0, the MAPE diverge to $ +\infty $, therefore the predicted value should be normalized far away from 0. 
 \item Mutation: The basic process for the mutation is the single position mutation. It corresponds to the change of a value of a specific element in the fixed or variable array of an individual.
 First, a signed change amount \begin{math}C \in \{-2 ,-1, +1, +2\}\end{math} is randomly determined using the following criteria. A random real number $P$ between $0$ and $1$ is generated using a uniform distribution. The change amount will be:
 \begin{itemize}
@@ -236,7 +237,7 @@ Some of the infected individuals die ($P_{DIE}$). Such individuals can no longer
 The individuals surviving the coronavirus in an epoch will infect new individuals (intensification). According to the probability $P_{SUPERSPREADER}$, an individual can spread the desease with two rate:
 \subitem Ordinary spreader, with spreading rate given by \textit{ORDINARY\_RATE}.
 \subitem Super-spreaders, with spreading rate given by \textit{SUPERSPREADER\_RATE}.\\
-To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar (P_{TRAVEL}), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an \textit{ORDINARY\_RATE}.
+To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar (\textit{P\_TRAVEL}), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an \textit{ORDINARY\_RATE}.
 \item Stop Criterion:
 The stop criterion of this algorithm, by construction, does not need to be controlled by any parameter. The recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. \\
 Additionally, due to time constraint, it is possible to set up a maximum number of iterations (\textit{PANDEMIC\_DURATION}) to force the stop criterion. The social isolation measures also contributes to achieve it.
@@ -319,7 +320,8 @@ This image represent the evolution of GA until the tenth epoch. It is training t
 The evolution of the various individuals has been clearly noted, the PZ infected at the first epoch becomes recovered in the second, spreading the disease to new individuals. Subsequently due to its high MAPE value it will become dead in the third epoch.
 Populations explode rapidly and MAPE decreases accordingly, as can be seen individuals tend to fall along the Y axis. The spread of the disease therefore can quickly find an individual with acceptable MAPE but, if optimal results are desired, the algorithm will have to be run for many more epochs. \\The figure shows the state of the algorithm after five and a half hours, with a $bestIndividual$ value of $MAPE \approx 10\%$ and an infected population of $314$ elements. Despite the duration of this race, the GA was still expanding and had not yet reached the peak, after which its descent began.\\
 \\
-Analyzing now the Table \ref{result}, the quality of the predictions is evaluated.
+Analyzing now the Table \ref{result}, the quality of the predictions is evaluated.\\
+MAPE is not the best fitness function for the Covid-19 infected forcasting problem, due to it's deformation near low value of prediction. MAE  ($ = \frac{1}{n}\sum_{t=1}^{n}|A_t - F_t| $) would return a meaningful value of error, after denormalization, because it would represent the different of the predicted infected with the correct one.
 
 %MAPE CON VALORI 0 SCHIZZA 
 % RUssia ha dati di input falsi
@@ -335,7 +337,9 @@ Ad disadvantage, the number of infected in the first iterations is exponential a
 \subsection{Future Work}
 One of the possible improvement of the algorithm is to reduce the number of infected considering the metaphor of the production of a vaccine. This could be done by adding a percentage of  \textit{VACCINATED\_INDIVIDUAL} .\\
 Moreover, an open-source library would simplify the implementation of the CVOA algorithm. The NN model could be passed as parameter, with a method to determine the GA individual from the model and with the fitness function.\\
-Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death. 
+Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death.
+
+
 \clearpage 
 \onecolumn
 \begin{figure}[!h]
