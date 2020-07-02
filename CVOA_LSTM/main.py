@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     if sys.argv[1] == "t":
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data", "UK_Test.csv")  # "covid-francia.csv")
+        path = os.path.join(my_path, "data\\Francia_Test.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     else:
     
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data", "Italia_-10.csv")  # "covid-francia.csv")
+        path = os.path.join(my_path, "data\\Francia_-10.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
