@@ -354,15 +354,15 @@ Covid-19 has an high level of mutation such as there are spreading different typ
 \begin{table}[!h]
 	\caption{Table of MAPE results }
 	\label{result}
-	\begin{tabular}{ccccccccccccccc}
-		   &$Training$&$A$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
+	\begin{tabular}{ccccccccccccc}
+		   &$Training$&$A$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
 	\hline
-		France (F) & $5662,9$ &  &  &  &  &  &  &  &  &  &  & \\\hline 		% 3
+		France (F) & $5662,9$ & $44.7$  & $45,9$ & $30.1$ & $37,0$ & $9,48\cdot10^8$ & $35,5$ & $34,2$ & $36,6$ & $9,67\cdot10^8$ & $37,8$ & $37,4$ \\\hline 		% 3
 		Germany (D) &  &  &  &  &  &  &  &  &  &  &  & \\\hline 				% 
-		India (IN) &  $99,4$ &  &  &  &  &  &  &  &  &  & \\\hline 			% 4
-		Italy (IT) & $13,5$ &  &  &  &  &  &  &  &  &  &  & \\\hline 			% 9
-		United Kingdom (UK) & $55,3$ &  &  &  &  &  &  &  &  &  &  & \\\hline 	% 6
-		United States (US) &  $97,7$ &  &  &  &  &  &  &  &  &  &  & \\\hline 		% 4
+		India (IN) &  $99,4$ & $93,2$ & $93,2$ & $93,2$ & $93,2$ & $6,75\cdot10^7$ & $93,2$ & $93,2$ & $93,2$ & $6,75\cdot10^7$ & $93,2$ & $93,2$ \\\hline 			% 4
+		Italy (IT) & $13,5$ & $91,4$ & $92,1$ & $88,0$ & $89,65$ & $1,76\cdot10^8$ & $89,5$ & $89,0$ & $89,3$ & $2,07\cdot10^8$ & $89,8$ & $89,7$ \\\hline 			% 9
+		UK & $55,3$ & $86,35$ & $87,61$ & $77,57$ & $81,93$ & $4,41\cdot10^8$ & $81,60$ & $80,24$ & $81,43$ & $5,15\cdot10^8$ & $82,42$ & $82,12$ \\\hline 	% 6
+		US &  $97,7$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\\hline 		% 4
 	\end{tabular}
 
 	\label{tab:params}
@@ -372,15 +372,15 @@ Covid-19 has an high level of mutation such as there are spreading different typ
 \begin{table}[!h]
 	\caption{Table of MAE results }
 	\label{result}
-	\begin{tabular}{ccccccccccccccc}
-		   &$A$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
+	\begin{tabular}{ccccccccccccc}
+		   &$A$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
 	\hline
-		France (F) &  &  &  &  &  &  &  &  &  &  &  & \\\hline
-		Germany (D) &  &  &  &  &  &  &  &  &  &  &  & \\\hline
-		India (IN) &  &  &  &  &  &  &  &  &  &  &  & \\\hline
-		Italy (IT) &  &  &  &  &  &  &  &  &  &  &  & \\\hline
-		United Kingdom (UK) &  &  &  &  &  &  &  &  &  &  &  & \\\hline
-		United States (US) &  $$ &  &  &  &  &  &  &  &  &  &  & \\\hline
+		F & $0.44$ & $0.45$ & $0.30$ & $0.37$ & $0.94$ & $0.36$ & $0.34$ & $0.36$ & $0.96$ & $0.14$ & $0.14$ & \\\hline
+		D & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\\hline
+		IN & $0.93$ & $0.93$ & $0.93$ & $0.93$ & $0.06$ & $0.93$ & $0.93$ & $0.93$ & $0.06$ & $0.93$ & $0.93$ \\\hline
+		IT & $0,91$ & $0,92$ & $0,88$ & $0,89$ & $0,17$ & $0,89$ & $0,89$ & $0,89$ & $0,20$ & $0,89$ & $0,89$ \\\hline
+		UK & $0,86$ & $0,87$ & $0,77$ & $0,81$ & $0,44$ & $0,81$ & $0,80$ & $0,81$ & $0,51$ & $0,82$ & $0,82$ \\\hline
+		US &  $$ &  &  &  &  &  &  &  &  &  &  & \\\hline
 	\end{tabular}
 
 	\label{tab:params}
