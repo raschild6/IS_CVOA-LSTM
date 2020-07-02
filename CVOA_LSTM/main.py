@@ -7,7 +7,7 @@ import os
 
 if __name__ == '__main__':
     my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "Covid-totali_positivi-andamento-nazionale.csv")
+    path = os.path.join(my_path, "US.csv")
     # Load the dataset
     data, scaler = load_data(path_to_data=path, useNormalization=True)
     # Transform data to a supervised dataset
