@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     if sys.argv[1] == "t":
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data\\Francia_Test.csv") # "covid-francia.csv")
+        path = os.path.join(my_path, "data", "UK_Test.csv")  # "covid-francia.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
@@ -34,10 +34,40 @@ if __name__ == '__main__':
         results = model.evaluate(xtest, ytest)
         print(predictions, pred)
         print(dict(zip(model.metrics_names, results)))
+    elif sys.argv[1] == "tt":
+
+        my_path = os.path.abspath(os.path.dirname(__file__))
+        for dataset_path in os.listdir(os.path.join(my_path, "data")):
+            if not dataset_path.endswith("Test.csv"):
+                continue
+
+            path = os.path.join(my_path, "data", dataset_path)  # "covid-francia.csv")
+            path.abspath(os.path.dirname(__file__))
+            path = os.path.join(my_path, "data", "UK_Test.csv")  # "covid-francia.csv")
+            # Load the dataset
+            data, scaler = load_data(path_to_data=path, useNormalization=True)
+            # Transform data to a supervised dataset
+            data = data_to_supervised(data, historical_window=9, prediction_horizon=1)
+            X = data.iloc[:, 0: 9]
+            Y = data.iloc[:, 9:]
+            xtest = np.reshape(X.values, (X.shape[0], X.shape[1], 1))
+            ytest = np.reshape(Y.values, (Y.shape[0], Y.shape[1], 1))
+
+            model_path = sys.argv[2]
+            model = keras.models.load_model(model_path)
+            model.compile(loss='mape', optimizer='adam', metrics=['mse', 'mae', 'mape'])
+
+            predictions = model.predict(xtest[:])
+            pred = scaler.inverse_transform(predictions.reshape(1, -1)).flatten()
+
+            results = model.evaluate(xtest, ytest)
+            print(predictions, pred)
+            print(dict(zip(model.metrics_names, results)))
+
     else:
     
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data\\Francia_-10.csv") # "covid-francia.csv")
+        path = os.path.join(my_path, "data", "Italia_-10.csv")  # "covid-francia.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
