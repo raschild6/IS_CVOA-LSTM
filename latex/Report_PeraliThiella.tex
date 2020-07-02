@@ -198,7 +198,7 @@ All probabilities involved in the GA are based on the real data of Coronavirus p
 \end{itemize}
 
 \subsubsection{Population Individuals}
-	As explained above, figure \ref{fig:individual}, the individuals of the population are composed of two arrays of integer values (fixed and variable length). They are also divided into three categories:
+	As explained above, Figure \ref{fig:individual}, the individuals of the population are composed of two arrays of integer values (fixed and variable length). They are also divided into three categories:
 \begin{itemize}
 \item Dead
 \item Recovered
@@ -217,7 +217,7 @@ There is another category in which only some infected individuals can belong, ac
 \subsubsection{Main Steps} 
 \label{subsec:mainSteps}
 \begin{itemize}
-\item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
+\item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real Covid-19 epidemic, it identifies the first human being infected.
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
 \item Fitness Value: The fitness value of each individual is the Mean Absolute Percentage Error (MAPE) value $ MAPE = \frac{1}{n} $. It is returned as a result of performing the LSTM training and tries to quantify the goodness of the hyper-parameters used, as it corresponds to the measure of the accuracy of the forecast of a forecasting method with respect to the real value.
 \item Mutation: The basic process for the mutation is the single position mutation. It corresponds to the change of a value of a specific element in the fixed or variable array of an individual.
@@ -233,7 +233,7 @@ Once the amount of change is determined, the new value for the infected element 
 \item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a Propagation Function has been developed.
 \item Propagation Function:
 Some of the infected individuals die ($P_{DIE}$). Such individuals can no longer infect new individuals.
-The individuals surviving the coronavirus in an epoch will infect new individuals (intensification). According to the probability $P_{SUPERSPREADER}$, an individual can spread the desease with two rate:
+The individuals surviving the Coronavirus in an epoch will infect new individuals (intensification). According to the probability $P_{SUPERSPREADER}$, an individual can spread the desease with two rate:
 \subitem Ordinary spreader, with spreading rate given by \textit{ORDINARY\_RATE}.
 \subitem Super-spreaders, with spreading rate given by \textit{SUPERSPREADER\_RATE}.\\
 To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar (P_{TRAVEL}), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an \textit{ORDINARY\_RATE}.
@@ -282,7 +282,7 @@ At first, for each infected individual a $Fitness\_function$ is executed. As exp
 Then the infected list of individuals is sorted in increasing order by fitness (MAPE) and so, the first individual corresponds to the best and therefore the one with the lowest MAPE value. Remember that the lower the MAPE value, the more accurate the forecast with real data.
 For each epoch, this individual is stored in $best\_individual$ if its fitness is lower that the current one. In this way, whenever the agorithm is stopped, the best hyper-parameters found up to now are always available.\\
 The next step is to update the dead individuals and to assign the super-spreader property. Two indexes, as percentages of the infected list size, are used to divide the infected list. The infected individuals contained between $0$ to $idx\_super\_spreader$ also become super-spreaders while individuals from $idx\_deaths$ onwards die.\\
-Every infected individual infects a certain number of new individuals ($nInfected$, Row 17 or 19), added to $new\_infected\_list$. The process of infection (Row 25) is described in the next section. Once the re-infections are found, the populations are updated in which the $infected$ list is added to $recovered$ list and $new\_infected\_list$ become $infected$ list. Finally the method ends.
+Every infected individual infects a certain number of new individuals ($nInfected$, Row 17 or 19), added to $new\_infected\_list$. The process of infection (Row 25) is described in the next section. Once the re-infections are found, the populations are updated, in which the $infected$ list is added to $recovered$ list and $new\_infected\_list$ become $infected$ list. Finally the method ends.
 
 \subsection{individual.infected(travel\_distance)}
 This method, shown in Listing \ref{lnfected}, is called in Row 25 of Listing \ref{propagateDisease}. It represents the way in which an individual can infect other ones. As in the previous method, it also consists of several steps:
@@ -350,8 +350,8 @@ Covid-19 has an high level of mutation such as there are spreading different typ
 \begin{table}[!h]
 	\caption{Table of MAPE results }
 	\label{result}
-	\begin{tabular}{cccccccccccccccc}
-		   &$AU$&$A$&$BE$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
+	\begin{tabular}{ccccccccccccccccc}
+		   &$Training$&$AU$&$A$&$BE$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
 	\hline
 		Australia (AU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
 		Austria (A) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
@@ -383,7 +383,7 @@ Covid-19 has an high level of mutation such as there are spreading different typ
 \lstset{label={propagateDisease}}
 \lstset{basicstyle=\footnotesize}
 \lstset{showstringspaces=false}
-\lstset{numbers=left}					% show row number (to use them in code?)
+\lstset{numbers=left}		% show row number
 \lstset{stepnumber=1}
 \begin{lstlisting}[mathescape=true]
 new_infected_list = []
