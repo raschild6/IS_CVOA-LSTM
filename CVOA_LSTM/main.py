@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
         # Initialize problem
         cvoa = CVOA(size_fixed_part=3, min_size_var_part=2, max_size_var_part=11, fixed_part_max_values=[5, 8], var_part_max_value=11, max_time=20,
-                    xtrain=xtrain, ytrain=ytrain, xval=xval, yval=yval, pred_horizon=1, epochs=epochs, batch=batch, scaler=scaler)
+                    xtrain=xtrain, ytrain=ytrain, xval=xval, yval=yval, pred_horizon=1, epochs=epochs, batch=batch, scaler=scaler, xtest=xtest, ytest=ytest)
         time = int(round(t.time() * 1000))
         solution = cvoa.run()
         time = int(round(t.time() * 1000)) - time
