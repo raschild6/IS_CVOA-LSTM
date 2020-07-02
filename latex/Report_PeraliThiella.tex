@@ -16,6 +16,7 @@
 \setlength{\pdfpageheight}{11in}  	% DO NOT CHANGE THIS
 \usepackage{listings} %Per inserire codice ***
 \usepackage{enumitem}
+\usepackage{array}
 %\nocopyright
 %PDF Info Is REQUIRED.
 % For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
@@ -312,7 +313,9 @@ The first, GA Evolution, is visible to the figure \ref{fig:GAgraph} which contai
 \item Top-Center: Last current individual to whom fitness has been calculated
 \item Center: Graph which relates the MAPE value of all individuals to epoches 
 \end{itemize}
-This image represent the evolution of GA until the tenth epoch. For each epoch (epoch $i$ is shown between the value $i-1$ and $i$ of the X axis)
+This image represent the evolution of GA until the tenth epoch. It is training the trend of positive total cases of Covid-19 for each day in Italy. For each epoch (epoch $i$ is shown between the value $i-1$ and $i$ of the X axis) the 3 different populations are plotted (a point means an individual with respect to its type: dead = red, infected = yellow, recovered = green).\\
+The evolution of the various individuals has been clearly noted, the PZ infected at the first epoch becomes recovered in the second, spreading the disease to new individuals. Subsequently due to its high MAPE value it will become dead in the third epoch.
+Populations explode rapidly and MAPE decreases accordingly, as can be seen individuals tend to fall along the Y axis. The spread of the disease therefore can quickly find an individual with acceptable MAPE but, if optimal results are desired, the algorithm will have to be run for many more epochs. \\The figure shows the state of the algorithm after five and a half hours, with a $bestIndividual$ value of $MAPE \approx 10\%$ and an infected population of $314$ elements. Despite the duration of this race, the GA was still expanding and had not yet reached the peak, after which its descent began.
 
 \clearpage
 \onecolumn
@@ -322,26 +325,27 @@ This image represent the evolution of GA until the tenth epoch. For each epoch (
 	\label{fig:GAgraph}
 \end{figure}
 
+\setlength\extrarowheight{6pt}
 \begin{table}[!h]
 	\caption{Table result....}
 	\begin{tabular}{cccccccccccccccc}
 		   &$AU$&$A$&$BE$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
 	\hline
-		Australia (AU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Austria (A) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Belgium (BE) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		California (CA) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Florida (FL) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		France (F) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Germany (D) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		India (IN) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Italy (IT) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		NewYork (NY) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Russia (RU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Spain (ES) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		UK &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		US &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-		Washington (WA) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Australia (AU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Austria (A) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Belgium (BE) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		California (CA) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Florida (FL) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		France (F) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Germany (D) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		India (IN) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Italy (IT) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		NewYork (NY) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Russia (RU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Spain (ES) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		United Kingdom (UK) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		United States (US) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
+		Washington (WA) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\\hline
 	\end{tabular}
 
 	\label{tab:params}
