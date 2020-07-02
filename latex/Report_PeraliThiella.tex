@@ -15,6 +15,7 @@
 \setlength{\pdfpagewidth}{8.5in}  	% DO NOT CHANGE THIS
 \setlength{\pdfpageheight}{11in}  	% DO NOT CHANGE THIS
 \usepackage{listings} %Per inserire codice ***
+\usepackage{enumitem}
 %\nocopyright
 %PDF Info Is REQUIRED.
 % For /Author, add all authors within the parentheses, separated by commas. No accents or commands.
@@ -289,7 +290,7 @@ This method, shown in Listing \ref{lnfected}, is called in Row 25 of Listing \re
 First of all, as mentioned earlier, there is no crossover for generating new individuals. An individual is created starting from the structure of another and applying one or more single position mutations to it. Therefore, the individual who infected a $nInfected$ new individuals calls this method $nInfected$ times. Every time, this individual is copied to a new individual ($mutated$) as a first step and then all the mutation are applied.\\
 Starting from Row 2, with probability $\frac{1}{3}$, a single position mutation (section \ref{sec:mainSteps}) is applied at third value of the $fixed\_part$ array of the $mutated$ individual. If the mutation occurs, the $variable\_part$ is also resized according to the mutation value and the $_PTRAVEL$ is set to $-1$.
 In this way, at Row 8, two situations are possibile:
-\begin{enumerate}
+\begin{enumerate}[label=\arabic*)]
 \item $_PTRAVEL = -1$: Always if the mutation occurred or in case mutation fails but the individual who infected had a probability of $-1$ 
 \item $_PTRAVEL = 1$: Because the individual who infected had a probability of $1$ and mutation fails 
 \end{enumerate}
@@ -298,6 +299,21 @@ From Row 14 to 23, these mutations are performed. Every mutation is a single pos
 This procedure represents the spread of the disease from one individual to another and therefore the creation of the population of infected individuals of the following epoch.
 
 \section{Experiment Evaluation}
+There are 2 different assessments to make for CVOA algorithm:
+\begin{enumerate}[label=\arabic*)]
+\item GA Evolution
+\item Predict Accuracy
+\end{enumerate}
+The first, GA Evolution, is visible to the figure \ref{fig:GAgraph} which contains all the information needed to evaluate the goodness of the trend of the GA. A brief explanation of the parts that make up the figure is as follows:
+\begin{itemize}
+\item Top: Timer represent hours, minutes and seconds in the form HH:MM:SS
+\item Top-Left: Populations counter
+\item Top-Right: Best Individual found with its relative MAPE, percentage of $recovered$ on $infected$
+\item Top-Center: Last current individual to whom fitness has been calculated
+\item Center: Graph which relates the MAPE value of all individuals to epoches 
+\end{itemize}
+This image represent the evolution of GA until the tenth epoch. For each epoch (epoch $i$ is shown between the value $i-1$ and $i$ of the x axis)
+
 \clearpage
 \onecolumn
 \begin{figure}[!h]
@@ -305,6 +321,31 @@ This procedure represents the spread of the disease from one individual to anoth
 	\caption{GA trend graph}
 	\label{fig:GAgraph}
 \end{figure}
+
+\begin{table}[!h]
+	\caption{Table result....}
+	\begin{tabular}{cccccccccccccccc}
+		   &$AU$&$A$&$BE$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
+	\hline
+		Australia (AU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Austria (A) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Belgium (BE) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		California (CA) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Florida (FL) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		France (F) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Germany (D) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		India (IN) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Italy (IT) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		NewYork (NY) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Russia (RU) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Spain (ES) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		UK &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		US &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+		Washington (WA) &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+	\end{tabular}
+
+	\label{tab:params}
+\end{table}
 \clearpage
 \twocolumn
 
