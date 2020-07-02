@@ -245,7 +245,7 @@ Additionally, due to time constraint, it is possible to set up a maximum number 
 
 \section{CVOA Meta-heuristic}
 The two computational techniques (deep learning and CVOA), used to found the best hyperparameter values, is very common in machine learning for optimizing models during the training process \cite{Calvet, Darwish2019ASO,Devikanniga}.\\
-Including the basic concepts in Section \ref{sec:basicConcepts}, it is now possible to understand the overall functioning of the CVOA and analyze it in a more specific way.
+Including the basic concepts in Basic Concepts section, it is now possible to understand the overall functioning of the CVOA and analyze it in a more specific way.
 Only the most important methods will be presented.\\
  Starting with the main method of the algorithm, shown as follows:
 
@@ -266,7 +266,7 @@ while (PANDEMIC_DURATION $\geq$ 0 && epidemic) {
     PANDEMIC_DURATION --
 }
 \end{lstlisting}
-As mentioned in Section \ref{subsec:mainSteps}, the initial population is composed of a single individual (PZ), with values of the arrays that compose it randomly generated (within their limits). Then a loop is performed until the stop criterion is reached. Each iteration of the cycle corresponds to an epoch of the GA, in each epoch the disease is propagated. Once the stop conditions are updated, the cycle starts again.\\
+As mentioned in Main Steps section, the initial population is composed of a single individual (PZ), with values of the arrays that compose it randomly generated (within their limits). Then a loop is performed until the stop criterion is reached. Each iteration of the cycle corresponds to an epoch of the GA, in each epoch the disease is propagated. Once the stop conditions are updated, the cycle starts again.\\
 Analyzing specifically the method contained:
 \subsection{propagateDisease()}
 In row number 3 of Listing \ref{CVOAmain} there is the $propagateDisease()$ method. This method joins fitness evaluations, population selection, crossover and mutations functions and it is illustrated in the Pseudo-Python Code page at Listing \ref{propagateDisease}.\\
@@ -279,7 +279,7 @@ Looking inside, it is composed by several steps :
 \item Row 29: Looking re-infections
 \item Row 33,34: Prepare populations for the next epoch.
 \end{itemize}
-At first, for each infected individual a $Fitness\_function$ is executed. As explained in Section \ref{subsec:mainSteps}, it returns values of MAPE, one for each.\\ %aggiungi LSTM
+At first, for each infected individual a $Fitness\_function$ is executed. As explained in Main Steps section, it returns values of MAPE, one for each.\\ %aggiungi LSTM
 Then the infected list of individuals is sorted in increasing order by fitness (MAPE) and so, the first individual corresponds to the best and therefore the one with the lowest MAPE value. Remember that the lower the MAPE value, the more accurate the forecast with real data.
 For each epoch, this individual is stored in $best\_individual$ if its fitness is lower that the current one. In this way, whenever the agorithm is stopped, the best hyper-parameters found up to now are always available.\\
 The next step is to update the dead individuals and to assign the super-spreader property. Two indexes, as percentages of the infected list size, are used to divide the infected list. The infected individuals contained between $0$ to $idx\_super\_spreader$ also become super-spreaders while individuals from $idx\_deaths$ onwards die.\\
@@ -294,7 +294,7 @@ This method, shown in Listing \ref{lnfected}, is called in Row 25 of Listing \re
 \item Row 14-23: Generation of New Infected
 \end{itemize}
 First of all, as mentioned earlier, there is no crossover for generating new individuals. An individual is created starting from the structure of another and applying one or more single position mutations to it. Therefore, the individual who infected a $nInfected$ new individuals calls this method $nInfected$ times. Every time, this individual is copied to a new individual ($mutated$) as a first step and then all the mutation are applied.\\
-Starting from Row 2, with probability $\frac{1}{3}$, a single position mutation (Section \ref{sec:mainSteps}) is applied at third value of the $fixed\_part$ array of the $mutated$ individual. If the mutation occurs, the $variable\_part$ is also resized according to the mutation value and the $P_{TRAVEL}$ is set to $-1$.
+Starting from Row 2, with probability $\frac{1}{3}$, a single position mutation (Main Steps section) is applied at third value of the $fixed\_part$ array of the $mutated$ individual. If the mutation occurs, the $variable\_part$ is also resized according to the mutation value and the $P_{TRAVEL}$ is set to $-1$.
 In this way, at Row 8, two situations are possibile:
 \begin{enumerate}[label=\arabic*)]
 \item $P_{TRAVEL} = -1$: Always if the mutation occurred or in case mutation fails but the individual who infected had a probability of $-1$ 
