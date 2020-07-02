@@ -66,7 +66,7 @@ if __name__ == '__main__':
     else:
     
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data\\Francia_-10.csv")
+        path = os.path.join(my_path, "data\\US_-10.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset

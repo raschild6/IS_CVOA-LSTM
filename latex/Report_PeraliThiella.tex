@@ -147,7 +147,7 @@ The LSTM model is a neural network based on a computational unit (Figure \ref{fi
 \end{figure}
 A LSTM neural network is made by at least one layer of LSTM units. The dataset to train a LSTM network in general is made by a sequence of input values and a corresponding sequence of output.
 In our specific case the dataset is the time sequence of the number of infected of Covid19 in Italy. During the input preprocessing the complete sequence is divided in shorter sequences of length $ historical\_windows $ called sample. Each sample is shifted of 1 between each other and for each input sample is returned a sequence of length $ prediction\_horizon $ which represent the predicted number of infected in the next days. This two parameter are manually set and depend from external factor, such as the number of sample in the input sequence. \\ The structure of NN is as in Figure \ref{fig:LSTM}.\\ 
-In Table \ref{tab:params} there are the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ 12*6*8*6 = 3456 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
+In Table \ref{tab:params} there are the tuned hyperparameters values chosen for the experiment. Note that the total number of possible configuration of hyperparameters is $ |LR|\cdot|D|\cdot \sum_{j =1}^{8}|L_i|^j = 125537135068840 $ however as will be shown, the number of trained model will be much less, decreasing the time to find good hyperparameters.\\
 \begin{table}[!h]
 	\caption{Table of the values to tune for the model. The chosen value for each parameter are: number of units per layer $ L_i $, Learning Rate ($ LR $), dropout percentage ($ D $) and number of LSTM layers ($ N $). }
 	\begin{tabular}{ccccc}
@@ -159,8 +159,8 @@ In Table \ref{tab:params} there are the tuned hyperparameters values chosen for 
 		4  & 100  & $ 10^{-4} $ & 0.20 & 4 	\\
 		5  & 125  & $ 10^{-5} $ & 0.25 & 5 	\\
 		6  & 150  & $ 10^{-6} $ & 0.30 & 6 	\\
-		7  & 175  &  			& 0.35 &   	\\
-		8  & 200  &  			& 0.40 &   	\\
+		7  & 175  &  			& 0.35 & 7   	\\
+		8  & 200  &  			& 0.40 & 8	\\
 		9  & 225  &  			&      &   	\\
 		10 & 250  &  			&      &   	\\
 		11 & 275  &  			&      &   	\\
@@ -323,10 +323,13 @@ The evolution of the various individuals has been clearly noted, the PZ infected
 Populations explode rapidly and MAPE decreases accordingly, as can be seen individuals tend to fall along the Y axis. The spread of the disease therefore can quickly find an individual with acceptable MAPE but, if optimal results are desired, the algorithm will have to be run for many more epochs. \\The figure shows the state of the algorithm after five and a half hours, with a $bestIndividual$ value of $MAPE \approx 10\%$ and an infected population of $314$ elements. Despite the duration of this race, the GA was still expanding and had not yet reached the peak, after which its descent began.\\
 \\
 Analyzing now the Table \ref{result}, the quality of the predictions is evaluated.\\
-MAPE is not the best fitness function for the Covid-19 infected forcasting problem, due to it's deformation near low value of prediction. MAE  ($ = \frac{1}{n}\sum_{t=1}^{n}|A_t - F_t| $) would return a meaningful value of error, after denormalization, because it would represent the different of the predicted infected with the correct one.
+Five dataset has been used for training several LSTM model represented in the first coloumn. Each dataset is a timeseries of total infected cases. Instead for each column is associated to a country test set.\\
+MAPE is not the best fitness function for the Covid-19 infected forcasting problem, due to it's deformation near low value of prediction. MAE  ($ = \frac{1}{n}\sum_{t=1}^{n}|A_t - F_t| $) would return a meaningful value of error, after denormalization, because it would represent the different of the predicted infected with the correct one.\\
+Therefore, the second table (Table \ref{resultMAE}) is used to have a better view of the goodness of results.
+Italy and the UK test sets are almost always predicted optimally by all trained models. Even Germany despite having the worst results is able to predict the latter instead, for example, France model that in these two test sets gets its worst results but compensating in the other ones.\\
+These data show how predicting a country using a model from a different one does not seem to be a good idea, it is preferable to use each model with its relative test set. Furthermore, a dataset containing few elements, such as a value of total positive cases for each day, is insufficient to obtain an optimal and generic model for several countries.
 
-%MAPE CON VALORI 0 SCHIZZA 
-% RUssia ha dati di input falsi
+
 \section{Conclusion}
 In this report it was analyzed the CVOA metaheuristic which automatically estimate some good value for the hyperparameter for a ML algorithm. As seen there are two main advantages:
 \begin{itemize}
@@ -352,17 +355,16 @@ Covid-19 has an high level of mutation such as there are spreading different typ
 
 \setlength\extrarowheight{5pt}
 \begin{table}[!h]
-	\caption{Table of MAPE results }
+	\caption{Table of MAPE results: Abbr. [ A = Australia, F = France, D = Germany, IN = India, IT = Italy, NY = New York, RU = Russia, ES = Spain, UK = United Kingdom, US = United States, WA = Washington ]}
 	\label{result}
 	\begin{tabular}{ccccccccccccc}
-		   &$Training$&$A$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
+		   &$Validation$&$A$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
 	\hline
-		France (F) & $5662,9$ & $44.7$  & $45,9$ & $30.1$ & $37,0$ & $9,48\cdot10^8$ & $35,5$ & $34,2$ & $36,6$ & $9,67\cdot10^8$ & $37,8$ & $37,4$ \\\hline 		% 3
-		Germany (D) &  &  &  &  &  &  &  &  &  &  &  & \\\hline 				% 
-		India (IN) &  $99,4$ & $93,2$ & $93,2$ & $93,2$ & $93,2$ & $6,75\cdot10^7$ & $93,2$ & $93,2$ & $93,2$ & $6,75\cdot10^7$ & $93,2$ & $93,2$ \\\hline 			% 4
-		Italy (IT) & $13,5$ & $91,4$ & $92,1$ & $88,0$ & $89,65$ & $1,76\cdot10^8$ & $89,5$ & $89,0$ & $89,3$ & $2,07\cdot10^8$ & $89,8$ & $89,7$ \\\hline 			% 9
-		UK & $55,3$ & $86,35$ & $87,61$ & $77,57$ & $81,93$ & $4,41\cdot10^8$ & $81,60$ & $80,24$ & $81,43$ & $5,15\cdot10^8$ & $82,42$ & $82,12$ \\\hline 	% 6
-		US &  $97,7$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\\hline 		% 4
+		F & $5662,9$ & $44.7$  & $45,9$ & $30.1$ & $37,0$ & $9,48\cdot10^8$ & $35,5$ & $34,2$ & $36,6$ & $9,67\cdot10^8$ & $37,8$ & $37,4$ \\\hline 		% 3
+		D & $96,6$ & $100,0$ & $100,0$ & $99,9$ & $99,9$ & $2,94\cdot10^6$ & $99,9$ & $99,9$ & $100,0$ & $3,28\cdot10^6$ & $99,9$ & $99,9$ \\\hline		% 6
+		IN &  $99,4$ & $93,2$ & $93,2$ & $93,2$ & $93,2$ & $6,75\cdot10^7$ & $93,2$ & $93,2$ & $93,2$ & $6,75\cdot10^7$ & $93,2$ & $93,2$ \\\hline 			% 4
+		IT & $13,5$ & $91,4$ & $92,1$ & $88,0$ & $89,65$ & $1,76\cdot10^8$ & $89,5$ & $89,0$ & $89,3$ & $2,07\cdot10^8$ & $89,8$ & $89,7$ \\\hline 			% 9
+		UK & $55,3$ & $86,3$ & $87,6$ & $77,5$ & $81,9$ & $4,41\cdot10^8$ & $81,6$ & $80,2$ & $81,4$ & $5,15\cdot10^8$ & $82,4$ & $82,1$ \\\hline 		% 6						
 	\end{tabular}
 
 	\label{tab:params}
@@ -371,16 +373,15 @@ Covid-19 has an high level of mutation such as there are spreading different typ
 \setlength\extrarowheight{5pt}
 \begin{table}[!h]
 	\caption{Table of MAE results }
-	\label{result}
+	\label{resultMAE}
 	\begin{tabular}{ccccccccccccc}
 		   &$A$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\
 	\hline
 		F & $0.44$ & $0.45$ & $0.30$ & $0.37$ & $0.94$ & $0.36$ & $0.34$ & $0.36$ & $0.96$ & $0.14$ & $0.14$ & \\\hline
-		D & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ & $$ \\\hline
+		D &  $1.00$ & $1.00$ & $0,99$ & $0,99$ & $2,94\cdot10^{-3}$ & $0,99$ & $0,99$ & $1.00$ & $3,28\cdot10^{-3}$ & $0,99$ & $0,99$ \\\hline
 		IN & $0.93$ & $0.93$ & $0.93$ & $0.93$ & $0.06$ & $0.93$ & $0.93$ & $0.93$ & $0.06$ & $0.93$ & $0.93$ \\\hline
 		IT & $0,91$ & $0,92$ & $0,88$ & $0,89$ & $0,17$ & $0,89$ & $0,89$ & $0,89$ & $0,20$ & $0,89$ & $0,89$ \\\hline
 		UK & $0,86$ & $0,87$ & $0,77$ & $0,81$ & $0,44$ & $0,81$ & $0,80$ & $0,81$ & $0,51$ & $0,82$ & $0,82$ \\\hline
-		US &  $$ &  &  &  &  &  &  &  &  &  &  & \\\hline
 	\end{tabular}
 
 	\label{tab:params}
