@@ -23,18 +23,22 @@ if __name__ == '__main__':
 
     if sys.argv[1] == "t":
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data\\UK_Test.csv") # "covid-francia.csv")
+        path = os.path.join(my_path, "data\\US_Test.csv") # "covid-francia.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
         data = data_to_supervised(data, historical_window=9, prediction_horizon=1)
-        xtrain, xtest, ytrain, ytest, xval, yval = splitData(data, historical_window=9, test_size=.9, val_size=.1)
-        # Add shape to use LSTM network
-        xtrain, xtest, ytrain, ytest, xval, yval = adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval)
+        X = data.iloc[:, 0: 9]
+        Y = data.iloc[:, 9:]
+        xtest = np.reshape(X.values, (X.shape[0], X.shape[1], 1))
+        ytest = np.reshape(Y.values, (Y.shape[0], Y.shape[1], 1))
+
         model_path = sys.argv[2]
         model = keras.models.load_model(model_path)
         model.compile(loss='mape', optimizer='adam', metrics=['mse', 'mae', 'mape'])
+        predictions = model.predict(xtest)
         results = model.evaluate(xtest, ytest)
+        print(predictions)
         print(dict(zip(model.metrics_names, results)))
     else:
     
