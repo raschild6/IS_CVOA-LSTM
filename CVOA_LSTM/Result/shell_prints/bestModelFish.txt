@@ -1,0 +1,5 @@
+2.1.0
+Please install GPU version of TF
+True
+ 32/158 [=====>........................] - ETA: 1s - loss: 0.4207 - mean_absolute_percentage_error: 494.9646 - mean_squared_error: 0.4207158/158 [==============================] - 0s 3ms/sample - loss: 0.3946 - mean_absolute_percentage_error: 5022210.5000 - mean_squared_error: 0.3946
+{'loss': 0.39458855081208144, 'mean_absolute_percentage_error': 5022210.5, 'mean_squared_error': 0.39458856}

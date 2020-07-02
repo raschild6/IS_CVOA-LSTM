@@ -17,6 +17,7 @@ class CVOA:
     P_REINFECTION = 0.01
     SUPERSPREADER_PERC = 0.04
     DEATH_PERC = 0.5 
+    countIndividual = 0
 
     def __init__(self, size_fixed_part, min_size_var_part, max_size_var_part, fixed_part_max_values, var_part_max_value, max_time, xtrain, ytrain, xval, yval, pred_horizon=1, epochs=10, batch=512, scaler=None):
         self.infected = []
@@ -158,5 +159,6 @@ class CVOA:
                                           individual_fixed_part=individual.fixed_part,
                                           individual_variable_part=individual.var_part, scaler=self.scaler,
                                           prediction_horizon=self.pred_horizon, epochs=self.epochs, batch=self.batch)
-        print("--- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(mse, mape, str(individual)))
+        countIndividual += 1
+        print("{:.0f}--- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(countIndividual, mse, mape, str(individual)))
         return mape.numpy(), model

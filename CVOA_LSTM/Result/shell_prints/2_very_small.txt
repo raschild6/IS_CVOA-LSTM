@@ -1,0 +1,154 @@
+2020-04-25 13:23:00.904158: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_101.dll
+2020-04-25 13:23:05.358993: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2020-04-25 13:23:05.369915: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library nvcuda.dll
+2020-04-25 13:23:05.416708: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: GeForce GTX 1650 with Max-Q Design computeCapability: 7.5
+coreClock: 1.245GHz coreCount: 16 deviceMemorySize: 4.00GiB deviceMemoryBandwidth: 104.34GiB/s
+2020-04-25 13:23:05.417837: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_101.dll
+2020-04-25 13:23:05.448821: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+2020-04-25 13:23:05.496946: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cufft64_10.dll
+2020-04-25 13:23:05.505992: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library curand64_10.dll
+2020-04-25 13:23:05.565766: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusolver64_10.dll
+2020-04-25 13:23:05.592763: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusparse64_10.dll
+2020-04-25 13:23:05.676427: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+2020-04-25 13:23:05.677040: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-04-25 13:23:06.307127: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-04-25 13:23:06.307237: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0
+2020-04-25 13:23:06.307298: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N
+2020-04-25 13:23:06.309365: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2915 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1650 with Max-Q Design, pci bus id: 0000:01:00.0, compute capability: 7.5)
+2020-04-25 13:23:06.312662: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: GeForce GTX 1650 with Max-Q Design computeCapability: 7.5
+coreClock: 1.245GHz coreCount: 16 deviceMemorySize: 4.00GiB deviceMemoryBandwidth: 104.34GiB/s
+2020-04-25 13:23:06.313211: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_101.dll
+2020-04-25 13:23:06.313311: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+2020-04-25 13:23:06.313508: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cufft64_10.dll
+2020-04-25 13:23:06.313625: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library curand64_10.dll
+2020-04-25 13:23:06.313853: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusolver64_10.dll
+2020-04-25 13:23:06.314059: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusparse64_10.dll
+2020-04-25 13:23:06.314285: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+2020-04-25 13:23:06.315050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2.1.0
+2020-04-25 13:23:06.316131: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: GeForce GTX 1650 with Max-Q Design computeCapability: 7.5
+coreClock: 1.245GHz coreCount: 16 deviceMemorySize: 4.00GiB deviceMemoryBandwidth: 104.34GiB/s
+2020-04-25 13:23:06.316456: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_101.dll
+2020-04-25 13:23:06.316557: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+2020-04-25 13:23:06.317798: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cufft64_10.dll
+2020-04-25 13:23:06.317914: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library curand64_10.dll
+2020-04-25 13:23:06.318025: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusolver64_10.dll
+2020-04-25 13:23:06.318141: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusparse64_10.dll
+2020-04-25 13:23:06.318256: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+2020-04-25 13:23:06.318702: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-04-25 13:23:06.318818: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-04-25 13:23:06.321803: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0
+2020-04-25 13:23:06.322982: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N
+2020-04-25 13:23:06.324241: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/device:GPU:0 with 2915 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1650 with Max-Q Design, pci bus id: 0000:01:00.0, compute capability: 7.5)
+2020-04-25 13:23:06.325117: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: GeForce GTX 1650 with Max-Q Design computeCapability: 7.5
+coreClock: 1.245GHz coreCount: 16 deviceMemorySize: 4.00GiB deviceMemoryBandwidth: 104.34GiB/s
+2020-04-25 13:23:06.325322: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_101.dll
+2020-04-25 13:23:06.325491: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+2020-04-25 13:23:06.325876: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cufft64_10.dll
+2020-04-25 13:23:06.325971: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library curand64_10.dll
+2020-04-25 13:23:06.326192: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusolver64_10.dll
+2020-04-25 13:23:06.326317: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusparse64_10.dll
+2020-04-25 13:23:06.326497: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+2020-04-25 13:23:06.326984: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-04-25 13:23:06.327115: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-04-25 13:23:06.327248: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0
+2020-04-25 13:23:06.327303: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N
+2020-04-25 13:23:06.327796: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/device:GPU:0 with 2915 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1650 with Max-Q Design, pci bus id: 0000:01:00.0, compute capability: 7.5)
+Default GPU Device: /device:GPU:0
+Num GPUs Available:  1
+True
+Patient Zero: [4, 0, 4] + [7, 6, 0, 8]
+
+2020-04-25 13:23:07.245345: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: GeForce GTX 1650 with Max-Q Design computeCapability: 7.5
+coreClock: 1.245GHz coreCount: 16 deviceMemorySize: 4.00GiB deviceMemoryBandwidth: 104.34GiB/s
+2020-04-25 13:23:07.245603: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_101.dll
+2020-04-25 13:23:07.245700: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+2020-04-25 13:23:07.245950: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cufft64_10.dll
+2020-04-25 13:23:07.246046: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library curand64_10.dll
+2020-04-25 13:23:07.246593: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusolver64_10.dll
+2020-04-25 13:23:07.246811: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cusparse64_10.dll
+2020-04-25 13:23:07.246952: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+2020-04-25 13:23:07.247319: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-04-25 13:23:07.247423: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-04-25 13:23:07.247683: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0
+2020-04-25 13:23:07.247744: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N
+2020-04-25 13:23:07.248171: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2915 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1650 with Max-Q Design, pci bus id: 0000:01:00.0, compute capability: 7.5)
+2020-04-25 13:23:16.670259: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+2020-04-25 13:23:16.992085: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudnn64_7.dll
+[4, 0, 4] + [7, 6, 0, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+Iteration  1
+Best fitness (MAPE ; MSE ) so far:  0.0000  ; 0.0000
+Best individual:  [4, 0, 4] + [7, 6, 0, 8]
+Infected:  7 ; Recovered:  1 ; Deaths:  0
+Recovered/Infected: 14.2857%
+Search space covered so far = 8 / 125537135068840 = 0.0000%
+
+[3, 0, 4] + [7, 6, 0, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[4, 0, 4] + [7, 6, 2, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[4, 0, 4] + [7, 6, 1, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[4, 0, 3] + [7, 6, 0]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[4, 0, 4] + [8, 6, 0, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[2, 0, 4] + [7, 6, 0, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+2020-04-25 13:25:40.154891: I tensorflow/stream_executor/cuda/cuda_driver.cc:801] failed to allocate 596.70M (625685248 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+2020-04-25 13:25:40.155328: I tensorflow/stream_executor/cuda/cuda_driver.cc:801] failed to allocate 537.03M (563116800 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+[4, 0, 5] + [7, 6, 0, 8, 6]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+Iteration  2
+Best fitness (MAPE ; MSE ) so far:  0.0000  ; 0.0000
+Best individual:  [4, 0, 4] + [7, 6, 0, 8]
+Infected:  19 ; Recovered:  8 ; Deaths:  3
+Recovered/Infected: 42.1053%
+Search space covered so far = 30 / 125537135068840 = 0.0000%
+
+[3, 0, 3] + [8, 4, 0]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[1, 0, 4] + [7, 6, 0, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[3, 0, 4] + [7, 7, 0, 8]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+[1, 0, 5] + [9, 8, 0, 10, 2]
+---
+MSE:   0.0000 ; MAPE:   0.0000
+---
+2020-04-25 13:27:29.059351: E tensorflow/stream_executor/dnn.cc:596] CUDNN_STATUS_INTERNAL_ERROR
+in tensorflow/stream_executor/cuda/cuda_dnn.cc(1921): 'cudnnRNNBackwardData( cudnn.handle(), rnn_desc.handle(), model_dims.max_seq_length, output_desc.handles(), output_data.opaque(), output_desc.handles(), output_backprop_data.opaque(), output_h_desc.handle(), output_h_backprop_data.opaque(), output_c_desc.handle(), output_c_backprop_data.opaque(), rnn_desc.params_handle(), params.opaque(), input_h_desc.handle(), input_h_data.opaque(), input_c_desc.handle(), input_c_data.opaque(), input_desc.handles(), input_backprop_data->opaque(), input_h_desc.handle(), input_h_backprop_data->opaque(), input_c_desc.handle(), input_c_backprop_data->opaque(), workspace.opaque(), workspace.size(), reserve_space_data->opaque(), reserve_space_data->size())'
+2020-04-25 13:27:29.061361: W tensorflow/core/framework/op_kernel.cc:1655] OP_REQUIRES failed at cudnn_rnn_ops.cc:1922 : Internal: Failed to call ThenRnnBackward with model config: [rnn_mode, rnn_input_mode, rnn_direction_mode]: 2, 0, 0 , [num_layers, input_size, num_units, dir_count, max_seq_length, batch_size, cell_num_units]: [1, 200, 225, 1, 168, 372, 225]
+2020-04-25 13:27:29.062296: W tensorflow/core/common_runtime/base_collective_executor.cc:217] BaseCollectiveExecutor::StartAbort Internal: Failed to call ThenRnnBackward with model config: [rnn_mode, rnn_input_mode, rnn_direction_mode]: 2, 0, 0 , [num_layers, input_size, num_units, dir_count, max_seq_length, batch_size, cell_num_units]: [1, 200, 225, 1, 168, 372, 225]
+         [[{{node gradients/CudnnRNN_grad/CudnnRNNBackprop}}]]
+2020-04-25 13:27:29.063055: W tensorflow/core/common_runtime/base_collective_executor.cc:217] BaseCollectiveExecutor::StartAbort Internal: {{function_node __inference___backward_cudnn_lstm_with_fallback_175340_175516_specialized_for_StatefulPartitionedCall_2_at___inference_distributed_function_178455}} {{function_node __inference___backward_cudnn_lstm_with_fallback_175340_175516_specialized_for_StatefulPartitionedCall_2_at___inference_distributed_function_178455}} Failed to call ThenRnnBackward with model config: [rnn_mode, rnn_input_mode, rnn_direction_mode]: 2, 0, 0 , [num_layers, input_size, num_units, dir_count, max_seq_length, batch_size, cell_num_units]: [1, 200, 225, 1, 168, 372, 225]
+         [[{{node gradients/CudnnRNN_grad/CudnnRNNBackprop}}]]
+         [[StatefulPartitionedCall_2]]

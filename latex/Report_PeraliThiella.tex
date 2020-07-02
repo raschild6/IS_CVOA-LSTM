@@ -121,7 +121,8 @@ Luca Perali, Michele Thiella
 		of the search space are evenly explored (diversification).
 	\end{itemize}
 
-\section{Basic Concepts} \label{sec:basicConcepts}
+\section{Basic Concepts} 
+\label{sec:basicConcepts}
 CVOA is an algorithm used to tune the parameter of a neural network (NN), therefore let's describe the NN model used for the project and the data this net want to fit.
 It has been decided to train a LSTM model with a dataset of sequences representing the number of infected of a virus (in our case again the Covid19) over the time. Here is needed to specify that either the metaheuristic or the LSTM deal with Covid19, however it is involved in two independent way:
 \begin{itemize}
@@ -213,7 +214,8 @@ There is another category in which only some infected individuals can belong, ac
 \item New-Infected: It holds all the new individuals that have been infected in the previous epoch.
 \end{itemize}
 
-\subsubsection{Main Steps} \label{sec:mainSteps}
+\subsubsection{Main Steps} 
+\label{subsec:mainSteps}
 \begin{itemize}
 \item Patient-Zero: The initial population consists of only one individual, called patient-zero (PZ). As in the real coronavirus epidemic, it identifies the first human being infected.
 \item Fitness function: The fitness function, calculated for each infected individual at each epoch corresponds to the execution of the LSTM training, which structure is specified by the hyper-parameters given by the individuals themselves.
@@ -261,7 +263,7 @@ while (PANDEMIC_DURATION $\geq$ 0 && epidemic) {
     PANDEMIC_DURATION --
 }
 \end{lstlisting}
-As mentioned in Section \ref{sec:mainSteps}, the initial population is composed of a single individual (PZ), with values of the arrays that compose it randomly generated (within their limits). Then a loop is performed until the stop criterion is reached. Each iteration of the cycle corresponds to an epoch of the GA, in each epoch the disease is propagated. Once the stop conditions are updated, the cycle starts again.\\
+As mentioned in Section \ref{subsec:mainSteps}, the initial population is composed of a single individual (PZ), with values of the arrays that compose it randomly generated (within their limits). Then a loop is performed until the stop criterion is reached. Each iteration of the cycle corresponds to an epoch of the GA, in each epoch the disease is propagated. Once the stop conditions are updated, the cycle starts again.\\
 Analyzing specifically the method contained:
 \subsection{propagateDisease()}
 In row number 3 of Listing \ref{CVOAmain} there is the $propagateDisease()$ method. This method joins fitness evaluations, population selection, crossover and mutations functions and it is illustrated in the Pseudo-Python Code page at Listing \ref{propagateDisease}.\\
@@ -274,7 +276,7 @@ Looking inside, it is composed by several steps :
 \item Row 29: Looking re-infections
 \item Row 33,34: Prepare populations for the next epoch.
 \end{itemize}
-At first, for each infected individual a $Fitness\_function$ is executed. As explained in Section \ref{sec:mainSteps}, it returns values of MAPE, one for each.\\ %aggiungi LSTM
+At first, for each infected individual a $Fitness\_function$ is executed. As explained in Section \ref{subsec:mainSteps}, it returns values of MAPE, one for each.\\ %aggiungi LSTM
 Then the infected list of individuals is sorted in increasing order by fitness (MAPE) and so, the first individual corresponds to the best and therefore the one with the lowest MAPE value. Remember that the lower the MAPE value, the more accurate the forecast with real data.
 For each epoch, this individual is stored in $best\_individual$ if its fitness is lower that the current one. In this way, whenever the agorithm is stopped, the best hyper-parameters found up to now are always available.\\
 The next step is to update the dead individuals and to assign the super-spreader property. Two indexes, as percentages of the infected list size, are used to divide the infected list. The infected individuals contained between $0$ to $idx\_super\_spreader$ also become super-spreaders while individuals from $idx\_deaths$ onwards die.\\
@@ -318,17 +320,20 @@ The evolution of the various individuals has been clearly noted, the PZ infected
 Populations explode rapidly and MAPE decreases accordingly, as can be seen individuals tend to fall along the Y axis. The spread of the disease therefore can quickly find an individual with acceptable MAPE but, if optimal results are desired, the algorithm will have to be run for many more epochs. \\The figure shows the state of the algorithm after five and a half hours, with a $bestIndividual$ value of $MAPE \approx 10\%$ and an infected population of $314$ elements. Despite the duration of this race, the GA was still expanding and had not yet reached the peak, after which its descent began.\\
 \\
 Analyzing now the Table \ref{result}, the quality of the predictions is evaluated.
+
+%MAPE CON VALORI 0 SCHIZZA 
+% RUssia ha dati di input falsi
 \clearpage 
 \onecolumn
 \begin{figure}[!h]
-	\includegraphics[width=\columnwidth]{img/GA_algorithm_iter10}
+	\includegraphics[width=\columnwidth]{img/GA_algorithm_iter10-resize}
 	\caption{GA trend graph}
 	\label{fig:GAgraph}
 \end{figure}
 
-\setlength\extrarowheight{6pt}
+\setlength\extrarowheight{5pt}
 \begin{table}[!h]
-	\caption{Table result....}
+	\caption{Table of MAPE results }
 	\label{result}
 	\begin{tabular}{cccccccccccccccc}
 		   &$AU$&$A$&$BE$&$CA$&$FL$&$F$&$D$&$IN$&$IT$&$NY$&$RU$&$ES$&$UK$&$US$&$WA$\\

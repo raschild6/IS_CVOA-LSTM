@@ -7,13 +7,13 @@ import sys
 
 if __name__ == '__main__':
     my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "data\\NewYork_-10.csv") # "covid-francia.csv")
+    path = os.path.join(my_path, "data\\UK.csv") # "covid-francia.csv")
     # Load the dataset
     data, scaler = load_data(path_to_data=path, useNormalization=True)
     # Transform data to a supervised dataset
     data = data_to_supervised(data, historical_window=9, prediction_horizon=1)
     # Split the dataset
-    xtrain, xtest, ytrain, ytest, xval, yval = splitData(data, historical_window=9, test_size=.9, val_size=.3)
+    xtrain, xtest, ytrain, ytest, xval, yval = splitData(data, historical_window=9, test_size=.1, val_size=.3)
     # Add shape to use LSTM network
     xtrain, xtest, ytrain, ytest, xval, yval = adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval)
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     if sys.argv[1] == "t":
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data\\NewYork_Test.csv") # "covid-francia.csv")
+        path = os.path.join(my_path, "data\\UK_Test.csv") # "covid-francia.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
