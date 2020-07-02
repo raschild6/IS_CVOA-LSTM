@@ -7,7 +7,7 @@
 #SBATCH --mem 10G
 #SBATCH --mail-user luca.perali@studenti.unipd.it
 #SBATCH --mail-type ALL
-#SBATCH --time=01:30:00
+#SBATCH --time=02:30:00
 # requesting 1 GPU; set --gres=gpu:2 to use both GPUs
 #SBATCH --gres=gpu:1
 

@@ -52,7 +52,7 @@ class CVOA:
         res *= pow(self.var_part_max_value, self.max_size_var_part)
         return res
 
-    def propagateDisease(self):
+    def propagateDisease(self, model_name="bestModel.h5"):
         new_infected_list = []
         # Step 1. Assess fitness for each individual.
         for x in self.infected:
@@ -67,7 +67,7 @@ class CVOA:
         # Step 3. Update best global solution, if proceed.
         if self.bestSolution.fitness is None or self.infected[0].fitness < self.bestSolution.fitness:
             self.bestModel = model
-            model.save("bestModel.h5")
+            model.save(model_name)
             self.bestSolution = deepcopy(self.infected[0])
 
         resetTF()  # Release GPU memory
@@ -118,7 +118,7 @@ class CVOA:
         # Step 7. Update the infected list with the new infected individuals.
         self.infected = new_infected_list
 
-    def run(self):
+    def run(self, model_name="bestModel.h5"):
         epidemic = True
         time = 0
         # Step 1. Infect to Patient Zero
@@ -136,7 +136,7 @@ class CVOA:
         # Step 2. The main loop for the disease propagation
         total_ss = self.calcSearchSpaceSize()
         while epidemic and time < self.max_time:
-            self.propagateDisease()
+            self.propagateDisease(model_name)
             dmse, dmape = getMetrics_denormalized(model=self.bestModel, xval=self.xval, yval=self.yval, batch=self.batch, scaler=self.scaler)
             print("Iteration ", (time + 1))
             #print("Best fitness so far: ", "{:.4f}".format(self.bestSolution.fitness))
