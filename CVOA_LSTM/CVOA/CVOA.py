@@ -159,6 +159,6 @@ class CVOA:
                                           individual_fixed_part=individual.fixed_part,
                                           individual_variable_part=individual.var_part, scaler=self.scaler,
                                           prediction_horizon=self.pred_horizon, epochs=self.epochs, batch=self.batch)
-        countIndividual += 1
-        print("{:.0f}--- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(countIndividual, mse, mape, str(individual)))
+        self.countIndividual += 1
+        print("{:.0f}--- MSE: {:.4f} ; MAPE: {:.4f} ; INDIVIDUAL: {} ---".format(self.countIndividual, mse, mape, str(individual)))
         return mape.numpy(), model
