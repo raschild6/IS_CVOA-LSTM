@@ -185,15 +185,15 @@ The main components and functions performed by the GA are folded successively:
 
 \subsubsection{GA Constant Parameters}
 This subsection presents the main parameters used and which will be mentioned in the following sections.
-All probabilities involved in the GA are based on the real data of Coronavirus propagation model.
+All probabilities involved in the GA are based on the real data of Coronavirus propagation model from World Health Organization \cite{who}.
 \begin{itemize}
-\item $_PDIE$: An infected individual can die with a given probability.
-\item $_PSUPERSPREADER$: It is the probability that an individual spread the disease to a greater number of healthy individuals. After this condition is validated, two situations can be found: % TODO: cercare di fixare l'underscore _ che è osceno così e magari cambia il font dei nomi (senti fish)
+\item $P_{DIE}$: An infected individual can die with a given probability.
+\item $P_{SUPERSPREADER}$: It is the probability that an individual spread the disease to a greater number of healthy individuals. After this condition is validated, two situations can be found: % TODO: cercare di fixare l'underscore _ che è osceno così e magari cambia il font dei nomi (senti fish)
 \subitem $ORDINARY\_RATE$: It is a standard infected individual (not a super-spreader) and this rate correspondes to its infection rate
 \subitem $SUPERSPREADER\_RATE$: If the infected individual turns out to be super-spreader, this is its infection rate which is at least more than double of Ordinary-Rate
-\item $_PREINFECTION$: Probability that a recovered individual can be re-infected.
-\item $_PISOLATION$: It corresponds to the probability of applying measures for social isolation to an individual. This parameter helps to reduce the exponential growth of the infected population after each iteration. Therefore, a high value must be assigned to this probability. Note that this value is not well defined by the real pandemic data because different countries have made different choices about it. 
-\item $_PTRAVEL$: This probability simulates how an infected individual can travel to any place in the world and can infect healthy individuals.
+\item $P_{REINFECTION}$: Probability that a recovered individual can be re-infected.
+\item $P_{ISOLATION}$: It corresponds to the probability of applying measures for social isolation to an individual. This parameter helps to reduce the exponential growth of the infected population after each iteration. Therefore, a high value must be assigned to this probability. Note that this value is not well defined by the real pandemic data because different countries have made different choices about it. 
+\item $P_{TRAVEL}$: This probability simulates how an infected individual can travel to any place in the world and can infect healthy individuals.
 \item $PANDEMIC\_DURATION$: This parameter simulates the duration of the pandemic.
 \end{itemize}
 
@@ -204,13 +204,13 @@ All probabilities involved in the GA are based on the real data of Coronavirus p
 \item Recovered
 \item Infected
 \end{itemize}
-There is another category in which only some infected individuals can belong, according to a certain probability ($_PSUPERSPREADER$). Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called Super-Spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
+There is another category in which only some infected individuals can belong, according to a certain probability ($P_{SUPERSPREADER}$). Only individuals who have the best fitness value (MAPE) of the population have a chance to fall into this category. They are called Super-Spreaders and have a higher infection potential than other individuals. In this way the evolution of infected individuals of the following epoch will be based on individuals with good MAPE value and will be statistically better.
 
 \subsubsection{Population}
 	The population divides individuals into three different (sub)populations, managed through lists and updated and maintained during the whole algorithm, in according with the type of individuals:
 \begin{itemize}
 \item Dead: It contains dead individuals. They can no longer be used in the algorithm.
-\item Recovered: After each epoch, infected individuals are removed from their population and inserted here. These individuals can return to influence the algorithm if they are reinfected ($_PREINFECTION$). Also individuals who simulate social distancing measures and therefore are isolated, belong to this population ($_PISOLATION$).
+\item Recovered: After each epoch, infected individuals are removed from their population and inserted here. These individuals can return to influence the algorithm if they are reinfected ($P_{REINFECTION}$). Also individuals who simulate social distancing measures and therefore are isolated, belong to this population ($P_{ISOLATION}$).
 \item New-Infected: It holds all the new individuals that have been infected in the previous epoch.
 \end{itemize}
 
@@ -232,11 +232,11 @@ Once the amount of change is determined, the new value for the infected element 
 %• Numerous mutations
 \item Crossover: The evolution of the population, as in the real case, is not given by the reproduction of individuals, but the virus spreads from one individual to another. In this sense there is no crossover step, in its place a Propagation Function has been developed.
 \item Propagation Function:
-Some of the infected individuals die ($_PDIE$). Such individuals can no longer infect new individuals.
-The individuals surviving the coronavirus in an epoch will infect new individuals (intensification). According to the probability $_PSUPERSPREADER$, an individual can spread the desease with two rate:
+Some of the infected individuals die ($P_{DIE}$). Such individuals can no longer infect new individuals.
+The individuals surviving the coronavirus in an epoch will infect new individuals (intensification). According to the probability $P_{SUPERSPREADER}$, an individual can spread the desease with two rate:
 \subitem Ordinary spreader, with spreading rate given by $ORDINARY\_RATE$.
 \subitem Super-spreaders, with spreading rate given by $SUPERSPREADER\_RATE$.\\
-To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar ($_PTRAVEL$), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an $ORDINARY\_RATE$.
+To ensure diversification, both types of spreader individuals can travel and explore solutions quite dissimilar ($P_{TRAVEL}$), thus allowing to propagate the disease to solutions that may be quite different. In case of not being traveler, new solutions will change according to an $ORDINARY\_RATE$.
 \item Stop Criterion:
 The stop criterion of this algorithm, by construction, does not need to be controlled by any parameter. The recovered and dead populations are constantly growing as time goes by, and the new infected population cannot infect new individuals. It is expected that the number of infected individuals increases for a certain number of iterations. However, from a particular iteration on, the size of the new infected population will be smaller than that of the current one because recovered and dead populations are too big, and the size of the infected population decays over time. \\
 Additionally, due to time constraint, it is possible to set up a maximum number of iterations ($PANDEMIC\_DURATION$) to force the stop criterion. The social isolation measures also contributes to achieve it.
@@ -291,11 +291,11 @@ This method, shown in Listing \ref{lnfected}, is called in Row 25 of Listing \re
 \item Row 14-23: Generation of New Infected
 \end{itemize}
 First of all, as mentioned earlier, there is no crossover for generating new individuals. An individual is created starting from the structure of another and applying one or more single position mutations to it. Therefore, the individual who infected a $nInfected$ new individuals calls this method $nInfected$ times. Every time, this individual is copied to a new individual ($mutated$) as a first step and then all the mutation are applied.\\
-Starting from Row 2, with probability $\frac{1}{3}$, a single position mutation (Section \ref{sec:mainSteps}) is applied at third value of the $fixed\_part$ array of the $mutated$ individual. If the mutation occurs, the $variable\_part$ is also resized according to the mutation value and the $_PTRAVEL$ is set to $-1$.
+Starting from Row 2, with probability $\frac{1}{3}$, a single position mutation (Section \ref{sec:mainSteps}) is applied at third value of the $fixed\_part$ array of the $mutated$ individual. If the mutation occurs, the $variable\_part$ is also resized according to the mutation value and the $P_{TRAVEL}$ is set to $-1$.
 In this way, at Row 8, two situations are possibile:
 \begin{enumerate}[label=\arabic*)]
-\item $_PTRAVEL = -1$: Always if the mutation occurred or in case mutation fails but the individual who infected had a probability of $-1$ 
-\item $_PTRAVEL = 1$: Because the individual who infected had a probability of $1$ and mutation fails 
+\item $P_{TRAVEL} = -1$: Always if the mutation occurred or in case mutation fails but the individual who infected had a probability of $-1$ 
+\item $P_{TRAVEL} = 1$: Because the individual who infected had a probability of $1$ and mutation fails 
 \end{enumerate}
 This probability determines the number of mutations applied to $mutated$.\\
 From Row 14 to 23, these mutations are performed. Every mutation is a single position mutation of a random value of $fixed\_part$ or $variable\_part$ of $mutated$, except the third $fixed\_part$ value and except values that have already been changed.\\
@@ -323,6 +323,19 @@ Analyzing now the Table \ref{result}, the quality of the predictions is evaluate
 
 %MAPE CON VALORI 0 SCHIZZA 
 % RUssia ha dati di input falsi
+\section{Conclusion}
+In this report it was analyzed the CVOA metaheuristic which automatically estimate some good value for the hyperparameter for a ML algorithm. As seen there are two main advantages:
+\begin{itemize}
+	\item the hyperparameter of the GA are that known from the coronavirus, preventing from tuning them manually;
+	\item the algorithm automatically terminate after certain number of iterations,
+	\item the metaheuristic automatically adapt on the context of the ML problem, indeed it could be used either in machine vision or in data sequence forecasting.
+\end{itemize}
+Ad disadvantage, the number of infected in the first iterations is exponential and the execution time is still high.
+
+\subsection{Future Work}
+One of the possible improvement of the algorithm is to reduce the number of infected considering the metaphor of the production of a vaccine. This could be done by adding a percentage of  \textit{VACCINATED\_INDIVIDUAL} .\\
+Moreover, an open-source library would simplify the implementation of the CVOA algorithm. The NN model could be passed as parameter, with a method to determine the GA individual from the model and with the fitness function.\\
+Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death. 
 \clearpage 
 \onecolumn
 \begin{figure}[!h]
@@ -359,20 +372,6 @@ Analyzing now the Table \ref{result}, the quality of the predictions is evaluate
 \end{table}
 \clearpage
 \twocolumn
-
-\section{Conclusion}
-In this report it was analyzed the CVOA metaheuristic which automatically estimate some good value for the hyperparameter for a ML algorithm. As seen there are two main advantages:
-\begin{itemize}
-	\item the hyperparameter of the GA are that known from the coronavirus, preventing from tuning them manually;
-	\item the algorithm automatically terminate after certain number of iterations,
-	\item the metaheuristic automatically adapt on the context of the ML problem, indeed it could be used either in machine vision or in data sequence forecasting.
-\end{itemize}
-Ad disadvantage, the number of infected in the first iterations is exponential and the execution time is still high.
-
-\subsection{Future Work}
-One of the possible improvement of the algorithm is to reduce the number of infected considering the metaphor of the production of a vaccine. This could be done by adding a percentage of  \textit{VACCINATED\_INDIVIDUAL} .\\
-Moreover, an open-source library would simplify the implementation of the CVOA algorithm. The NN model could be passed as parameter, with a method to determine the GA individual from the model and with the fitness function.\\
-Covid-19 has an high level of mutation such as there are spreading different type of virus. A parallel version of multi-covid CVOA could be implemented where the infected and the recovered are shared among all the viruses but all of them has different probability of infection and death. 
 \clearpage
 \onecolumn
 \section{Pseudo-Python Code}
@@ -414,7 +413,7 @@ for (individual in infected_population):
                                 infected_population || new_infected_list || recovered_population): 
                 new_infected_list.add(new_infected)
             if (new_infected $\in$ recovered_population && new_infected $\notin$ new_infected_list): 
-                if (random.random() < $_PREINFECTION$): 
+                if (random.random() < $P_{REINFECTION}$): 
                     new_infected_list.add(new_infected)
                     recovered_population.remove(new_infected)
             nInfected --

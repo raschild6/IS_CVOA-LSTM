@@ -6,16 +6,7 @@ import os
 import sys
 
 if __name__ == '__main__':
-    my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "data\\UK.csv") # "covid-francia.csv")
-    # Load the dataset
-    data, scaler = load_data(path_to_data=path, useNormalization=True)
-    # Transform data to a supervised dataset
-    data = data_to_supervised(data, historical_window=9, prediction_horizon=1)
-    # Split the dataset
-    xtrain, xtest, ytrain, ytest, xval, yval = splitData(data, historical_window=9, test_size=.1, val_size=.3)
-    # Add shape to use LSTM network
-    xtrain, xtest, ytrain, ytest, xval, yval = adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval)
+    
 
     # Deep Learning parameters
     epochs = 10
@@ -23,7 +14,7 @@ if __name__ == '__main__':
 
     if sys.argv[1] == "t":
         my_path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(my_path, "data\\US_Test.csv") # "covid-francia.csv")
+        path = os.path.join(my_path, "data\\UK_Test.csv") # "covid-francia.csv")
         # Load the dataset
         data, scaler = load_data(path_to_data=path, useNormalization=True)
         # Transform data to a supervised dataset
@@ -36,12 +27,26 @@ if __name__ == '__main__':
         model_path = sys.argv[2]
         model = keras.models.load_model(model_path)
         model.compile(loss='mape', optimizer='adam', metrics=['mse', 'mae', 'mape'])
-        predictions = model.predict(xtest)
+
+        predictions = model.predict(xtest[:])
+        pred = scaler.inverse_transform(predictions.reshape(1, -1)).flatten()
+
         results = model.evaluate(xtest, ytest)
-        print(predictions)
+        print(predictions, pred)
         print(dict(zip(model.metrics_names, results)))
     else:
     
+        my_path = os.path.abspath(os.path.dirname(__file__))
+        path = os.path.join(my_path, "data\\Italia_-10.csv") # "covid-francia.csv")
+        # Load the dataset
+        data, scaler = load_data(path_to_data=path, useNormalization=True)
+        # Transform data to a supervised dataset
+        data = data_to_supervised(data, historical_window=9, prediction_horizon=1)
+        # Split the dataset
+        xtrain, xtest, ytrain, ytest, xval, yval = splitData(data, historical_window=9, test_size=.1, val_size=.3)
+        # Add shape to use LSTM network
+        xtrain, xtest, ytrain, ytest, xval, yval = adaptShapesToLSTM(xtrain, xtest, ytrain, ytest, xval, yval)
+
         # Initialize problem
         cvoa = CVOA(size_fixed_part=3, min_size_var_part=2, max_size_var_part=11, fixed_part_max_values=[5, 8], var_part_max_value=11, max_time=20,
                     xtrain=xtrain, ytrain=ytrain, xval=xval, yval=yval, pred_horizon=1, epochs=epochs, batch=batch, scaler=scaler)
