@@ -8,7 +8,7 @@ import os
 if __name__ == '__main__':
     my_path = os.path.abspath(os.path.dirname(__file__))
     path = os.path.join(my_path, "data/Germania_-10.csv")
-    model_name = path.split("/")[-1].split(".")[0]
+    model_name = path.split("/")[-1].split(".")[0] + ".h5"
     # Load the dataset
     data, scaler = load_data(path_to_data=path, useNormalization=True)
     # Transform data to a supervised dataset
